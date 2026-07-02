@@ -248,8 +248,30 @@
 
   .nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 22px;
+  }
+  .back {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 12px 22px;
+    cursor: pointer;
+    visibility: hidden;
+  }
+  .back:hover { border-color: var(--ink); color: var(--ink); }
+  .locknote {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
   .next {
     font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
@@ -373,7 +395,7 @@
     <div class="opts" id="opts"></div>
     <div class="verdict" id="verdict"></div>
     <div class="explain" id="explain"></div>
-    <div class="nav"><button class="next" id="next">Next →</button></div>
+    <div class="nav"><button class="back" id="back">← Back</button><button class="next" id="next">Next →</button></div>
   </div>
 
   <div class="card results" id="results"></div>
@@ -1168,7 +1190,7 @@ trap:"They're not synonyms, and image doesn't produce awareness. Awareness is re
 BANK.forEach(q => { if (q._fixanswer) { /* answer already set correctly to index 0 */ delete q._fixanswer; } });
 
 /* ---------- ENGINE ---------- */
-const state = { i: 0, answered: 0, correct: 0, byCh: {}, byDiff: {} };
+const state = { i: 0, answered: 0, correct: 0, byCh: {}, byDiff: {}, picks: {} };
 const LETTERS = ["A","B","C","D"];
 
 const el = id => document.getElementById(id);
@@ -1181,6 +1203,7 @@ function loadState() {
   try {
     const s = JSON.parse(localStorage.getItem(KEY));
     if (s && typeof s.i === "number") Object.assign(state, s);
+    state.picks = state.picks || {};
   } catch(e) {}
 }
 function restart() {
@@ -1238,9 +1261,11 @@ function render() {
   const ex = el("explain"); ex.className = "explain"; ex.innerHTML = "";
   el("next").className = "next";
   el("next").textContent = state.i === BANK.length-1 ? "See results →" : "Next →";
+  el("back").style.visibility = state.i > 0 ? "visible" : "hidden";
+  if (state.picks[state.i] !== undefined) paint(state.picks[state.i], true);
 }
 
-function choose(idx) {
+function paint(idx, review) {
   const q = BANK[state.i];
   const correct = q.answer;
   const buttons = [...el("opts").children];
@@ -1262,19 +1287,12 @@ function choose(idx) {
   });
 
   const wasRight = idx === correct;
-  state.answered++;
-  if (wasRight) state.correct++;
-
-  state.byCh[q.ch] = state.byCh[q.ch] || {c:0,t:0};
-  state.byCh[q.ch].t++; if (wasRight) state.byCh[q.ch].c++;
-  state.byDiff[q.diff] = state.byDiff[q.diff] || {c:0,t:0};
-  state.byDiff[q.diff].t++; if (wasRight) state.byDiff[q.diff].c++;
-
   const v = el("verdict");
   v.className = "verdict show " + (wasRight ? "right" : "wrong");
-  v.textContent = wasRight
+  v.textContent = (wasRight
     ? "✓ Correct."
-    : `✗ Wrong. The correct answer (${LETTERS[correct]}) is highlighted above.`;
+    : `✗ Wrong. The correct answer (${LETTERS[correct]}) is highlighted above.`)
+    + (review ? " Submitted and locked." : "");
 
   // context-sensitive first panel
   const firstPanel = wasRight
@@ -1287,15 +1305,36 @@ function choose(idx) {
     `<div class="panel trap"><p class="plabel">Exam trap to avoid</p><p>${q.trap}</p></div>` +
     (q.insight ? `<div class="panel insight"><p class="plabel">Go deeper</p><p>${q.insight}</p></div>` : "");
   el("explain").className = "explain show";
-
-  updateDash();
-  saveState(state.i + 1);
   el("next").className = "next show";
+}
+
+function choose(idx) {
+  if (state.picks[state.i] !== undefined) return;
+  const q = BANK[state.i];
+  const wasRight = idx === q.answer;
+  state.picks[state.i] = idx;
+  state.answered++;
+  if (wasRight) state.correct++;
+  state.byCh[q.ch] = state.byCh[q.ch] || {c:0,t:0};
+  state.byCh[q.ch].t++; if (wasRight) state.byCh[q.ch].c++;
+  state.byDiff[q.diff] = state.byDiff[q.diff] || {c:0,t:0};
+  state.byDiff[q.diff].t++; if (wasRight) state.byDiff[q.diff].c++;
+  paint(idx, false);
+  updateDash();
+  saveState(state.i);
 }
 
 el("next").onclick = () => {
   if (state.i === BANK.length-1) { saveState(BANK.length); showResults(); return; }
   state.i++;
+  saveState(state.i);
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+el("back").onclick = () => {
+  if (state.i === 0) return;
+  state.i--;
   saveState(state.i);
   render();
   window.scrollTo({top:0, behavior:"smooth"});
