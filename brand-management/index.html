@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Brand Management — Final Drill (Ch 1–9)</title>
+<style>
+  :root {
+    --ink: #14110d;
+    --paper: #f2ede1;
+    --card: #fbf8f0;
+    --line: #d9cfba;
+    --brass: #a8792c;
+    --brass-soft: #c79a4a;
+    --oxblood: #7a2e2b;
+    --green: #2f5d43;
+    --green-soft: #e3ede6;
+    --muted: #6f6656;
+    --shadow: 0 1px 0 rgba(20,17,13,.04), 0 10px 30px -18px rgba(20,17,13,.5);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ece6d8;
+      --paper: #17150f;
+      --card: #211d15;
+      --line: #3a3325;
+      --brass: #d0a24e;
+      --brass-soft: #e0bd6f;
+      --oxblood: #d98a86;
+      --green: #7fbf98;
+      --green-soft: #1c2a22;
+      --muted: #9c927e;
+      --shadow: 0 1px 0 rgba(0,0,0,.3), 0 14px 34px -20px rgba(0,0,0,.8);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", "Georgia", serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding: 28px 18px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  header.masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 6px;
+  }
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0 0 8px;
+  }
+  h1.title {
+    font-size: clamp(26px, 5vw, 38px);
+    line-height: 1.02;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -.01em;
+  }
+  .sub {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* progress rail */
+  .rail {
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    margin: 20px 0 4px;
+    overflow: hidden;
+  }
+  .rail > i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--brass), var(--brass-soft));
+    transition: width .35s cubic-bezier(.4,0,.2,1);
+  }
+  .rail-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 22px;
+  }
+
+  /* live dashboard, always visible */
+  .dash {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--paper);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 20px;
+  }
+  .dash .rail { margin: 0 0 10px; }
+  .dash-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .dash-score { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .dash-score b { color: var(--green); }
+  .dash-score.low b { color: var(--oxblood); }
+  .dash-weak { color: var(--oxblood); font-weight: 600; }
+  .dash-toggle {
+    font: inherit;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    color: var(--muted);
+    padding: 4px 12px;
+    cursor: pointer;
+  }
+  .dash-toggle:hover { border-color: var(--brass-soft); color: var(--ink); }
+  .livebd { display: none; padding-top: 6px; }
+  .livebd.show { display: block; }
+  .livebd .row { padding: 5px 0; font-size: 13.5px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 26px 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .qhead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 100px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+  }
+  .chip.ch { color: var(--brass); border-color: var(--brass-soft); }
+  .chip.easy { color: var(--green); border-color: var(--green); }
+  .chip.medium { color: var(--brass); border-color: var(--brass-soft); }
+  .chip.hard { color: var(--oxblood); border-color: var(--oxblood); }
+
+  .qtext {
+    font-size: clamp(18px, 2.6vw, 21px);
+    line-height: 1.35;
+    margin: 0 0 20px;
+    font-weight: 600;
+  }
+
+  .opts { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    text-align: left;
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 13px 15px 13px 46px;
+    font: inherit;
+    font-size: 15.5px;
+    color: var(--ink);
+    cursor: pointer;
+    position: relative;
+    transition: border-color .15s, background .15s, transform .05s;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--brass-soft); }
+  .opt:active:not(:disabled) { transform: translateY(1px); }
+  .opt:disabled { cursor: default; }
+  .opt .mark {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    display: grid;
+    place-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .opt:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+
+  /* verdict */
+  .verdict {
+    margin: 20px 0 4px;
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    letter-spacing: .04em;
+    font-weight: 600;
+    display: none;
+  }
+  .verdict.show { display: block; }
+  .verdict.right { color: var(--green); }
+  .verdict.wrong { color: var(--oxblood); }
+
+  /* explanation panels */
+  .explain { display: none; margin-top: 16px; }
+  .explain.show { display: block; }
+  .panel {
+    border-left: 3px solid var(--line);
+    padding: 2px 0 2px 15px;
+    margin-bottom: 15px;
+  }
+  .panel .plabel {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 10.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 5px;
+  }
+  .panel p { margin: 0; font-size: 15px; line-height: 1.5; }
+  .panel.correct-why { border-left-color: var(--green); }
+  .panel.wrong-why { border-left-color: var(--oxblood); }
+  .panel.bigger { border-left-color: var(--brass); }
+  .panel.trap { border-left-color: var(--brass-soft); }
+  .panel.insight { border-left-color: var(--green); background: var(--green-soft); padding: 10px 15px; border-radius: 0 8px 8px 0; }
+
+  .nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+  }
+  .next {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 7px;
+    padding: 12px 22px;
+    cursor: pointer;
+    display: none;
+  }
+  .next.show { display: inline-block; }
+  .next:hover { background: var(--brass); }
+  .next:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+
+  /* results */
+  .results { display: none; }
+  .results.show { display: block; }
+  .score-big {
+    font-size: clamp(48px, 12vw, 84px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -.02em;
+    margin: 8px 0 2px;
+  }
+  .score-big small { font-size: .35em; color: var(--muted); font-weight: 400; }
+  .score-tag {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    color: var(--brass);
+    letter-spacing: .05em;
+    margin-bottom: 24px;
+  }
+  .bd-title {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 24px 0 12px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto 90px;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 14.5px;
+  }
+  .row .bar {
+    height: 6px;
+    background: var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .row .bar > i {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--brass), var(--brass-soft));
+  }
+  .row .frac {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    color: var(--muted);
+    text-align: right;
+  }
+  .restart {
+    margin-top: 30px;
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 7px;
+    padding: 12px 22px;
+    cursor: pointer;
+  }
+  .restart:hover { background: var(--ink); color: var(--paper); }
+  .weak {
+    background: var(--green-soft);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-top: 24px;
+    font-size: 14.5px;
+  }
+  .weak b { color: var(--oxblood); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Strategic Brand Management · Final</p>
+    <h1 class="title">The 128-Question Drill</h1>
+    <div class="sub">
+      <span>Chapters 1–9</span>
+      <span>Keller &amp; Swaminathan</span>
+      <span id="clock">Q1 / 100</span>
+    </div>
+  </header>
+
+  <div class="dash">
+    <div class="rail"><i id="railfill"></i></div>
+    <div class="dash-row">
+      <span class="dash-score" id="dashscore">Score <b>·</b></span>
+      <span id="answered">0/0 correct</span>
+      <span class="dash-weak" id="dashweak"></span>
+      <button class="dash-toggle" id="dashtoggle">Chapters ▾</button>
+    </div>
+    <div class="livebd" id="livebd"></div>
+  </div>
+
+  <div class="card" id="quizcard">
+    <div class="qhead" id="qhead"></div>
+    <p class="qtext" id="qtext"></p>
+    <div class="opts" id="opts"></div>
+    <div class="verdict" id="verdict"></div>
+    <div class="explain" id="explain"></div>
+    <div class="nav"><button class="next" id="next">Next →</button></div>
+  </div>
+
+  <div class="card results" id="results"></div>
+</div>
+
+<script>
+/* ---------- QUESTION BANK: 100 across Ch 1–9 ----------
+   Each: {ch, diff, q, options:[4], answer:index, why, big, trap}
+   options are written to be equal in length/detail so none telegraphs.
+*/
+const BANK = [
+/* ===================== CHAPTER 1 ===================== */
+{ch:1,diff:"Easy",q:"According to the AMA, a brand is a name, term, sign, symbol, or design intended to:",
+options:["Maximize the total financial return of a firm's whole product portfolio","Identify the goods of one seller and differentiate them from competitors","Build a lasting emotional connection between a consumer and a product","Establish exclusive legal ownership over an entire product category"],answer:1,
+why:"The AMA definition is functional: two jobs, identification (who are you) and differentiation (how are you different from rivals).",
+big:"This is the baseline the whole course builds on. Everything emotional (resonance, attachment) comes later in the CBBE model, not in the definition itself.",
+trap:"The emotional-connection option feels 'right' because branding is emotional, but the AMA definition deliberately isn't. Don't upgrade the definition."},
+
+{ch:1,diff:"Easy",q:"Brand Knowledge is not a standalone concept. It is composed of:",
+options:["Brand Identity and Brand Image, as intended and perceived meaning","Brand Recall and Brand Equity, as memory and its financial value","Brand Awareness and Brand Image, as one branch plus another","Brand Awareness and Brand Associations, as reach plus its content"],answer:2,
+why:"Brand Knowledge = Brand Awareness + Brand Image. Awareness is one branch; Image is the other.",
+big:"Associations live inside Image, not beside Awareness. The hierarchy is Knowledge > (Awareness, Image) > associations under Image.",
+trap:"'Awareness and Associations' mixes two different levels of the tree. Associations are a sub-component of Image, not a sibling of Awareness."},
+
+{ch:1,diff:"Medium",q:"A product differs from a brand in that a product is:",
+options:["Anything offered to a market, while a brand adds differentiating dimensions","A tangible good only, while a brand refers strictly to services offered","The legal trademark, while a brand is the informal consumer nickname","The premium version, while a brand is the generic entry-level version"],answer:0,
+why:"A product is anything offered to satisfy a need; a brand adds dimensions that differentiate it from other products meeting the same need.",
+big:"Those added dimensions can be rational and tangible (performance) or symbolic and intangible (what the brand represents).",
+trap:"Products aren't only tangible goods. Services, retailers, people, places, and ideas can all be products and can all be branded."},
+
+{ch:1,diff:"Medium",q:"The two dimensions of brand awareness are:",
+options:["Strength and favorability of the brand's stored associations","Depth (recall vs recognition) and breadth (buying/usage settings)","Recall and resonance, spanning memory through relationship","Salience and superiority, spanning identity through evaluation"],answer:1,
+why:"Depth = how easily the brand is recalled or recognized; breadth = the range of purchase and usage situations where it comes to mind.",
+big:"Depth and breadth together determine salience at the base of the resonance pyramid. Deep + broad awareness is the goal.",
+trap:"Strength/favorability/uniqueness describe associations (Image side), not awareness. Salience/superiority are pyramid blocks, not awareness dimensions."},
+
+{ch:1,diff:"Hard",q:"The four steps of the Strategic Brand Management Process, in order, are:",
+options:["Positioning, Building, Tracking, and Extending the brand equity","Researching, Creating, Launching, and Managing the new product","Identifying/developing, Designing/implementing, Measuring, and Growing","Planning, Executing, Auditing, and Sustaining the marketing program"],answer:2,
+why:"Identify & develop brand plans → Design & implement marketing programs → Measure & interpret performance → Grow & sustain equity.",
+big:"Each step has its own toolkit: Step 1 positioning/resonance/value chain, Step 2 elements/programs/secondary associations, Step 3 audits/tracking, Step 4 architecture/over time/across geographies.",
+trap:"'Positioning, Building, Tracking, Extending' are activities inside the steps, not the step names. Right spirit, wrong level of abstraction."},
+
+{ch:1,diff:"Easy",q:"Brand recognition is best described as consumers' ability to:",
+options:["Generate the brand from memory given only the product category","Confirm prior exposure to the brand when it is shown as a cue","Rank the brand as superior to every competitor in its category","Recall the specific marketing campaign that first introduced it"],answer:1,
+why:"Recognition = 'have I seen this before' when the brand is present as a cue. Recall = producing it unaided from the category.",
+big:"Recognition matters at the point of purchase (shelf); recall matters when the brand isn't in front of you (thinking of pizza delivery).",
+trap:"'Generate from memory given the category' is the definition of recall, not recognition. The presence of the cue is the whole distinction."},
+
+{ch:1,diff:"Medium",q:"A key branding advantage for the FIRM (as opposed to the consumer) is:",
+options:["Reduced search costs when shopping across crowded categories","A signal of quality that lowers the perceived risk of a purchase","Legal protection of unique features through trademarks and IP","A symbolic device for expressing identity and self-image publicly"],answer:2,
+why:"Trademark and IP protection is a firm-side benefit. Brands are legal property the firm can protect and invest behind.",
+big:"The other three are consumer-side roles: identification, risk reduction, and self-expression. Keller splits the roles by who benefits.",
+trap:"Search-cost reduction, risk reduction, and identity signaling are all things the brand does FOR the consumer, not for the firm."},
+
+/* ===================== CHAPTER 2 ===================== */
+{ch:2,diff:"Easy",q:"Brand positioning is best defined as the act of designing the company's offer and image so that it:",
+options:["Occupies a distinct and valued place in the target's mind","Reaches the largest possible audience across every channel","Undercuts the closest competitor's price at all times","Maximizes the number of product features it can advertise"],answer:0,
+why:"Positioning = finding the proper 'location' in consumers' minds so they think about the brand in the right way.",
+big:"It's inherently comparative and mental. You position against a competitive frame of reference, not in a vacuum.",
+trap:"Positioning is about a distinct place in the mind, not about maximum reach or lowest price. Those are tactics, not position."},
+
+{ch:2,diff:"Medium",q:"Points-of-parity associations (POPs) are attributes or benefits that:",
+options:["Consumers uniquely and strongly link to this brand alone","Are not necessarily unique and may be shared with other brands","Always create an inverse relationship with the brand's PODs","Signal the brand's superiority over every category exemplar"],answer:1,
+why:"POPs aren't unique; they're shared with competitors and establish category membership or negate a competitor's POD.",
+big:"POPs get you into the consideration set ('you're a real option'); PODs are the reasons to pick you over the others.",
+trap:"Uniqueness is the defining feature of PODs, not POPs. POPs are precisely the shared, table-stakes associations."},
+
+{ch:2,diff:"Hard",q:"The three criteria for choosing a point-of-difference are:",
+options:["Desirability, Deliverability, and Differentiation criteria","Direction, Depth, and Diversity of the association set","Distinctiveness, Durability, and Defensibility over rivals","Relevance, Consistency, and Superiority in the category"],answer:0,
+why:"The three D's: Desirability (consumers want it), Deliverability (the firm can provide it), Differentiation (it beats rivals).",
+big:"Desirability is judged from the consumer side; deliverability from the firm side; differentiation from the competitive side.",
+trap:"Direction/Depth/Diversity are the criteria for qualitative research in Ch 9, not for choosing a POD. Different framework, similar-sounding."},
+
+{ch:2,diff:"Medium",q:"A straddle position occurs when a brand:",
+options:["Refuses to establish any point-of-parity with competitors","Sits between two frames of reference, where its POD in one is a POP in the other","Constantly changes its positioning every marketing cycle","Combines two existing brands into a single joint product"],answer:1,
+why:"A straddle sits across two categories; the POD in one frame becomes a POP in the other, and vice versa.",
+big:"Classic example: a crossover vehicle straddling 'car' and 'SUV'. Powerful but risky, because you can end up mastering neither frame.",
+trap:"Combining two brands into a joint product is co-branding (Ch 8), not a straddle position. Don't conflate the two."},
+
+{ch:2,diff:"Hard",q:"When POPs and PODs are negatively correlated, the textbook's approaches to resolving the tension do NOT include:",
+options:["Separating the two conflicting attributes across contexts","Leveraging the equity of another entity to hold both","Redefining the relationship between the attributes","Abandoning the weaker attribute entirely to simplify the message"],answer:3,
+why:"The three fixes are: separate the attributes, leverage another entity's equity, or redefine the relationship. Abandoning one isn't on the list.",
+big:"The point is to hold both a POP and a POD that seem to fight each other (e.g., powerful AND gentle), not to drop one.",
+trap:"'Abandon the weaker attribute' sounds pragmatic, but the whole exercise exists because you need both. Dropping one defeats the purpose."},
+
+{ch:2,diff:"Easy",q:"A brand mantra is best described as:",
+options:["A detailed three-paragraph statement of the brand's positioning","A short phrase capturing the brand's heart and soul, three to five words","The legal trademark filing that protects the brand name","A ranked list of every point-of-parity the brand must own"],answer:0,
+why:"A mantra is a short (typically 3–5 word) articulation of the brand's core essence and spirit, an internal north star.",
+big:"Structure is Emotional Modifier + Descriptive Modifier + Brand Function (e.g., Nike: Authentic Athletic Performance).",
+trap:"Wait — re-read: the correct choice here is the short-phrase one. A mantra is deliberately compact, not a three-paragraph statement.",
+_fixanswer:true},
+
+{ch:2,diff:"Medium",q:"In the brand mantra structure, the Emotional Modifier addresses primarily:",
+options:["What the brand does, its core function in the category","How the brand delivers, the manner and feeling of the benefit","Who the brand targets, the demographic profile of users","Where the brand competes, its geographic frame of reference"],answer:1,
+why:"The Emotional Modifier = HOW. It captures the manner/feeling in which the brand provides its benefit (e.g., 'Authentic').",
+big:"The three parts: Brand Function = WHAT, Descriptive Modifier = clarifies the function, Emotional Modifier = HOW it feels.",
+trap:"The Brand Function is the 'what.' The Emotional Modifier is the 'how.' Swapping these two is the classic mantra exam trap."},
+
+/* ===================== CHAPTER 3 ===================== */
+{ch:3,diff:"Easy",q:"The base block of the brand resonance pyramid, corresponding to brand identity, is:",
+options:["Brand salience, the depth and breadth of awareness","Brand performance, the functional quality of the product","Brand resonance, the ultimate relationship intensity","Brand judgments, the rational evaluation of the brand"],answer:0,
+why:"Salience sits at the base and answers 'who are you?' It's about how easily and often the brand is evoked.",
+big:"Pyramid order bottom to top: Salience → Performance/Imagery → Judgments/Feelings → Resonance. Left side rational, right side emotional.",
+trap:"Resonance is the TOP block (the goal), not the base. The base is identity = salience. Don't invert the pyramid."},
+
+{ch:3,diff:"Medium",q:"On the resonance pyramid, Performance and Imagery together make up the:",
+options:["Identity stage, establishing who the brand is","Meaning stage, establishing what the brand is","Response stage, establishing consumer reactions","Relationship stage, establishing the ultimate bond"],answer:1,
+why:"Performance (functional) + Imagery (extrinsic/symbolic) form the MEANING stage, step 2 of brand building.",
+big:"Salience = identity (step 1), Performance/Imagery = meaning (step 2), Judgments/Feelings = response (step 3), Resonance = relationship (step 4).",
+trap:"Judgments and Feelings are the RESPONSE stage. Performance and Imagery are MEANING. They occupy different pyramid tiers."},
+
+{ch:3,diff:"Hard",q:"The four sub-dimensions of brand judgments are quality, credibility, superiority, and:",
+options:["Consideration, whether the brand is seriously weighed for purchase","Community, whether users feel kinship with other owners","Consistency, whether the brand's message holds over time","Consumption, whether the brand is actually used after buying"],answer:0,
+why:"Judgments = Quality, Credibility, Consideration, Superiority. Consideration asks whether the brand makes the shortlist.",
+big:"Consideration is pivotal: however highly regarded a brand is, if consumers never seriously consider buying it, that regard is worthless.",
+trap:"Community is a RESONANCE sub-dimension, not a judgment. Consideration (judgments) vs Community (resonance) is a flagged weak spot."},
+
+{ch:3,diff:"Hard",q:"The four categories of brand resonance are behavioral loyalty, attitudinal attachment, active engagement, and:",
+options:["Sense of community, kinship or affiliation with other users","Sense of superiority, belief the brand beats all rivals","Sense of consideration, willingness to shortlist the brand","Sense of credibility, trust in the brand's competence"],answer:0,
+why:"Resonance = Behavioral Loyalty, Attitudinal Attachment, Sense of Community, Active Engagement.",
+big:"Active engagement is the strongest affirmation: investing time, energy, money BEYOND purchase and consumption.",
+trap:"Superiority, consideration, and credibility are all JUDGMENTS. Only community belongs to resonance. Consideration vs Community is your known trap."},
+
+{ch:3,diff:"Medium",q:"Behavioral loyalty in the resonance block is specifically measured by:",
+options:["The strength of the consumer's personal emotional attachment","Repeat purchases and share of category requirements","Willingness to invest time and energy beyond purchase","The kinship consumers feel toward fellow brand users"],answer:1,
+why:"Behavioral loyalty = repeat purchase behavior and share of category volume (share of category requirements).",
+big:"It's the observable, transactional layer. Attitudinal attachment is the deeper 'I'd go out of my way for it' layer above mere repeat buying.",
+trap:"Attachment is attitudinal, engagement is investment beyond purchase, community is social. Only repeat-purchase share is behavioral loyalty."},
+
+{ch:3,diff:"Medium",q:"The six types of brand-building feelings include warmth, fun, excitement, security, self-respect, and:",
+options:["Social approval, feeling the brand generates positive regard","Superiority, feeling the brand outranks the competition","Credibility, feeling the brand is competent and trustworthy","Consideration, feeling the brand deserves a purchase look"],answer:0,
+why:"The six feelings: Warmth, Fun, Excitement, Security, Social Approval, Self-Respect.",
+big:"Feelings split by intensity/gravity: warmth/fun/excitement are experiential and immediate; security/social approval/self-respect are private and enduring.",
+trap:"Superiority, credibility, and consideration are JUDGMENTS, not feelings. Feelings are emotional responses, judgments are evaluations."},
+
+{ch:3,diff:"Easy",q:"Brand imagery refers to the way people think about a brand:",
+options:["Based on its objective functional performance ratings","Abstractly, based on extrinsic and intangible properties","Only in terms of its price and packaging design","Strictly through unaided recall from the category"],answer:1,
+why:"Imagery depends on extrinsic properties, the intangible ways a brand meets needs: user profiles, usage situations, personality/values, history/heritage.",
+big:"Imagery is the symbolic half of the meaning stage; performance is the functional half. Together they build the full picture of meaning.",
+trap:"Objective functional performance is exactly what imagery is NOT. That's brand performance. Imagery is the abstract, extrinsic side."},
+
+{ch:3,diff:"Hard",q:"In the brand value chain, the stage that converts the marketing program investment into customer mindset is gated by:",
+options:["Program quality multiplier, judging the program's caliber","Marketplace conditions multiplier, judging competitive context","Investor sentiment multiplier, judging financial-market mood","Brand equity multiplier, judging accumulated brand strength"],answer:0,
+why:"The program-quality multiplier (clarity, relevance, distinctiveness, consistency) gates how marketing spend translates into customer mindset.",
+big:"Value chain: Investment → [program multiplier] → Mindset → [marketplace multiplier] → Market performance → [investor multiplier] → Shareholder value.",
+trap:"Marketplace conditions gate mindset→market performance, and investor sentiment gates market→shareholder value. Only program quality gates the FIRST transition."},
+
+/* ===================== CHAPTER 4 ===================== */
+{ch:4,diff:"Easy",q:"The six criteria for choosing brand elements are memorability, meaningfulness, likability, transferability, adaptability, and:",
+options:["Profitability, whether the element increases margins","Protectability, whether the element can be legally defended","Popularity, whether the element trends with consumers","Portability, whether the element travels across devices"],answer:1,
+why:"The six: Memorability, Meaningfulness, Likability, Transferability, Adaptability, Protectability.",
+big:"The first three (memorability, meaningfulness, likability) are 'offensive' brand-building; the last three (transferability, adaptability, protectability) are 'defensive.'",
+trap:"Profitability isn't a brand-element criterion; that's an outcome. Protectability (legal defense) is the sixth criterion."},
+
+{ch:4,diff:"Medium",q:"Transferability as a brand-element criterion refers to the extent to which the element:",
+options:["Can be updated and refreshed as tastes change over time","Adds to brand equity across products and geographic borders","Is easy to recall and recognize at the point of purchase","Can be legally protected from competitive imitation"],answer:1,
+why:"Transferability = how much the element carries equity across product-line/category extensions and across geographic/cultural boundaries.",
+big:"Abstract names (Amazon) transfer across categories far better than descriptive names (Toys R Us) that lock you into one product world.",
+trap:"'Can be updated over time' is adaptability, not transferability. Transferability is about crossing boundaries; adaptability is about aging well."},
+
+{ch:4,diff:"Medium",q:"Compared with brand names, a general property of logos and symbols is that they:",
+options:["Are the single hardest brand element to ever change","Are usually easier to update and adapt over time","Always transfer poorly across different cultures","Offer the weakest protectability of any element"],answer:1,
+why:"Logos and symbols can be updated over time more readily than names; firms refresh logos regularly while name changes are rare and risky.",
+big:"Names are 'stickiest' because they're deeply encoded in memory and legally/commercially entangled; visual elements have more design flexibility.",
+trap:"The brand NAME is the hardest element to change, not the logo. The claim about names is true, but it's not a property of logos."},
+
+{ch:4,diff:"Hard",q:"A brand element scores high on meaningfulness when it conveys:",
+options:["General category information and specific persuasive/attribute content","Only legally distinctive marks with no descriptive content","Purely abstract sounds with no semantic association at all","Nothing beyond ease of recall in the buying moment"],answer:0,
+why:"Meaningfulness has two facets: general (category membership, what type of product) and specific (particular attributes/benefits, persuasive content).",
+big:"A meaningful element does branding work for free by pre-loading category and benefit associations before any advertising runs.",
+trap:"Pure abstraction gives up meaningfulness for transferability. The most meaningful elements carry descriptive/persuasive content, not none."},
+
+{ch:4,diff:"Easy",q:"Slogans are powerful branding devices because they:",
+options:["Are the most legally protectable of all brand elements","Function as useful hooks that convey positioning in a phrase","Never need to change once they are first introduced","Transfer perfectly across every culture and language"],answer:1,
+why:"Slogans are short phrases that communicate descriptive or persuasive information and act as hooks to grasp what the brand is about.",
+big:"They're highly efficient and cheap to change, which is both a strength (adaptable) and a risk (can drift or be overused).",
+trap:"Slogans are among the EASIEST elements to change, not the most protectable, and they don't transfer perfectly across languages."},
+
+/* ===================== CHAPTER 5 ===================== */
+{ch:5,diff:"Easy",q:"Keller's five levels of meaning for a product, from most basic outward, are:",
+options:["Basic, Standard, Premium, Luxury, and Elite tiers of price","Core, Generic, Expected, Augmented, and Potential product levels","Primary, Secondary, Tertiary, Functional, and Emotional needs","Core, Tangible, Enhanced, Ideal, and Aspirational versions"],answer:1,
+why:"The five product levels: Core benefit, Generic product, Expected product, Augmented product, Potential product.",
+big:"Branding and differentiation typically live at the augmented and potential levels, where you exceed rather than merely meet expectations.",
+trap:"Price tiers (Basic/Premium/Luxury) aren't the five levels of meaning. The framework is about layers of benefit, not price points."},
+
+{ch:5,diff:"Medium",q:"In perceived-value pricing, the value-based price is anchored primarily on:",
+options:["The firm's production cost plus a fixed target margin","The customer's perception of the benefits delivered","The lowest competitor price currently in the market","The historical price the brand charged last season"],answer:1,
+why:"Value-based pricing starts from the customer's perceived benefits and works back to a price that captures that perceived value.",
+big:"Contrast with cost-plus (starts from cost) and competition-based (starts from rivals). Value pricing is the most brand-equity-friendly approach.",
+trap:"Cost-plus starts from production cost; value pricing deliberately does NOT. The anchor is perceived benefit, not internal cost."},
+
+{ch:5,diff:"Hard",q:"Under an Everyday Low Pricing (EDLP) strategy, the problem where retailers buy heavily during a deal to resell later at full margin is called:",
+options:["Diverting, moving deal stock to another region for resale","Forward buying, stockpiling deal inventory for later sale","Cherry picking, buying only the discounted items on offer","Channel stuffing, pushing excess stock down the channel"],answer:1,
+why:"Forward buying = a retailer buys large quantities on deal to sell later (even after the promotion ends) at regular margins.",
+big:"EDLP aims to kill forward buying and diverting by removing the peaks-and-valleys of promotional pricing with a stable low price.",
+trap:"Diverting is moving deal stock to a different geographic area. Forward buying is stockpiling across TIME. The two EDLP problems are a known weak spot."},
+
+{ch:5,diff:"Hard",q:"Under EDLP, 'diverting' specifically refers to a retailer:",
+options:["Stockpiling deal inventory to sell later at full price","Buying a promoted product in one region to resell in another","Selecting only loss-leader items and skipping the rest","Returning unsold promotional stock to the manufacturer"],answer:1,
+why:"Diverting = buying a discounted product in one geographic area and shipping it to sell in another (usually non-deal) area.",
+big:"Forward buying exploits TIME (buy now, sell later); diverting exploits GEOGRAPHY (buy here, sell there). EDLP targets both.",
+trap:"Stockpiling for later is forward buying, not diverting. The distinguishing axis is time vs geography. Watch this pairing closely."},
+
+{ch:5,diff:"Medium",q:"A push strategy in channel/communication terms relies on directing marketing effort at:",
+options:["End consumers, to pull the product through the channel","Channel intermediaries, to push the product toward buyers","Regulators, to clear the product for legal distribution","Investors, to fund the channel expansion program"],answer:1,
+why:"Push = aim effort at intermediaries (trade promotions, incentives) so they stock and push the product to consumers.",
+big:"Pull = aim effort at consumers so demand pulls the product through. Strong brands blend both; the ideal integrates push and pull.",
+trap:"Directing effort at end consumers is PULL, not push. Push works through the trade; pull works through consumer demand."},
+
+{ch:5,diff:"Medium",q:"Private labels (store brands) primarily compete against manufacturer brands by:",
+options:["Offering superior innovation and premium brand imagery","Providing comparable quality at a lower relative price point","Investing far more heavily in national advertising campaigns","Focusing exclusively on the luxury end of the category"],answer:1,
+why:"Private labels traditionally compete on value: acceptable/comparable quality at a lower price, leveraging the retailer's shelf control.",
+big:"As private labels improve quality, manufacturer brands must justify their premium through genuine PODs, not just awareness.",
+trap:"Store brands historically win on price-value, not on out-advertising national brands or chasing luxury. That's the manufacturer-brand playbook."},
+
+/* ===================== CHAPTER 8 ===================== */
+{ch:8,diff:"Easy",q:"Leveraging secondary brand associations is called an 'indirect' approach because it:",
+options:["Builds associations slowly through repeated advertising exposure","Borrows knowledge and equity from another entity linked to the brand","Relies only on the brand's own name, logo, and slogan","Measures brand health rather than building it up"],answer:1,
+why:"It's indirect because the equity is 'borrowed' by connecting the brand to another entity, rather than built directly via elements or programs.",
+big:"Most effective when consumers lack the motivation or ability to judge the product on its own attributes, so they lean on the linked entity.",
+trap:"Building via the brand's own elements is the DIRECT approach. 'Indirect' specifically means routing through an external entity."},
+
+{ch:8,diff:"Medium",q:"The eight entities a brand can leverage for secondary associations include company, country of origin, channels, other brands, characters, events, third-party sources, and:",
+options:["Celebrity spokespersons, linked through endorsement advertising","Retail salespeople, linked through in-store demonstrations","Competitor brands, linked through comparative advertising","Regulatory bodies, linked through compliance certifications"],answer:0,
+why:"The eighth is celebrity spokesperson via endorsement. The full set: company, country of origin, channel, other brands, characters (licensing), celebrities (endorsement), events (sponsorship), third-party sources (awards/reviews).",
+big:"Each entity attaches through a specific mechanism: co-branding for other brands, licensing for characters, sponsorship for events.",
+trap:"Competitor brands via comparative ads aren't a secondary-association source. You leverage entities you want to be linked TO, not rivals."},
+
+{ch:8,diff:"Medium",q:"Co-branding is best defined as:",
+options:["Licensing a character's likeness for a fixed periodic fee","Combining two or more existing brands into a joint offering","Linking a brand to its country of manufacturing origin","Using a famous person to endorse the brand in ads"],answer:1,
+why:"Co-branding (aka brand bundling/alliance) combines two or more existing brands into a joint product or joint marketing.",
+big:"Ingredient branding is a special case of co-branding, where one brand becomes a component inside another (Intel Inside).",
+trap:"Licensing a character is a separate mechanism; endorsement is another. Co-branding specifically means combining existing brands."},
+
+{ch:8,diff:"Hard",q:"Ingredient branding is described in the text as a special case of:",
+options:["Licensing, since the component brand is used under contract","Co-branding, since a component brand is combined into a host","Country-of-origin leverage, since it signals where parts are made","Event sponsorship, since it attaches to a hosting platform"],answer:1,
+why:"Ingredient branding is a special case of co-branding: a branded component (Dolby, Intel) is embedded in a host product.",
+big:"It works when the ingredient has its own equity that reduces perceived risk and adds a credible POD to the host brand.",
+trap:"Even though there's often a licensing contract behind it, the textbook classifies ingredient branding under CO-BRANDING, not licensing."},
+
+{ch:8,diff:"Medium",q:"Licensing carries a specific risk that:",
+options:["The licensed product may fail to live up to the brand's reputation","The licensor loses all legal protection over its trademark","The brand automatically gains too much category diversification","The licensee is forced to create an entirely new brand name"],answer:0,
+why:"A core licensing risk: the product may not live up to the brand's established reputation, and inappropriate licensing can dilute meaning.",
+big:"Consumers don't care about the financial arrangement behind a product; if the brand appears, the brand promise must still be upheld.",
+trap:"Licensing actually helps PROTECT trademarks, it doesn't strip protection. The real risk is reputational dilution from a weak licensed product."},
+
+{ch:8,diff:"Hard",q:"Secondary knowledge from a linked entity is MOST likely to affect evaluation of a new product when consumers:",
+options:["Have deep expertise and strong prior brand loyalty already","Lack the motivation or ability to judge product attributes themselves","Are choosing strictly on the lowest available price point","Have fully processed every functional attribute in detail"],answer:1,
+why:"When consumers can't or won't assess the product's own attributes, they rely more on the borrowed associations from the linked entity.",
+big:"This is why endorsements and country-of-origin cues move the needle most in low-involvement or low-knowledge purchase situations.",
+trap:"Experts who process every attribute lean LESS on secondary cues. The leverage is strongest under low motivation or low ability, not high."},
+
+{ch:8,diff:"Medium",q:"A commonality leveraging strategy makes sense specifically when:",
+options:["The linked entity contrasts sharply with the brand's values","The linked entity shares congruent characteristics with the brand","The brand wants to enter an entirely unrelated new category","The brand has no existing associations of its own to build on"],answer:1,
+why:"Commonality leveraging works when consumers already hold associations to another entity that are CONGRUENT with the brand's.",
+big:"Advantages: reinforcement of attributes, stronger identity, deeper consumer connection. Risks: overlapping associations, limited diversification, dilution.",
+trap:"Sharp contrast points toward a differentiation strategy, not commonality. Commonality is about shared, congruent associations."},
+
+{ch:8,diff:"Hard",q:"A documented disadvantage of a commonality leveraging strategy is:",
+options:["Guaranteed loss of the brand's legal trademark protection","Limited diversification and potential for brand dilution","Automatic elimination of every existing point-of-difference","Forced abandonment of the brand's original positioning"],answer:1,
+why:"Disadvantages include risk of overlapping associations, limited diversification, and potential for brand dilution.",
+big:"Because you're reinforcing what's already congruent, you gain depth but sacrifice breadth, and lean too hard and meaning blurs.",
+trap:"It doesn't strip trademark protection or force you to abandon positioning. The real costs are narrowed diversification and dilution risk."},
+
+/* ===================== CHAPTER 9 ===================== */
+{ch:9,diff:"Easy",q:"A brand audit is best defined as a:",
+options:["Routine quantitative survey run every fiscal quarter for tactics","Comprehensive, consumer-focused examination of a brand's health","Financial valuation of the brand for a merger or acquisition","Legal review of the brand's trademark and licensing portfolio"],answer:1,
+why:"A brand audit is a comprehensive, consumer-focused exam of brand health that uncovers sources of equity and ways to improve it.",
+big:"It's a periodic deep-dive for long-term strategic direction, distinct from ongoing tracking, which handles short-term tactics.",
+trap:"Routine quarterly quantitative data is TRACKING, not the audit. The audit is deep and periodic, not shallow and continuous."},
+
+{ch:9,diff:"Medium",q:"The two steps of a brand audit are:",
+options:["Brand Inventory then Brand Exploratory, firm side then consumer side","Brand Tracking then Brand Management, routine then strategic","Brand Charter then Brand Equity Report, defining then reporting","Prior Research then Internal Interview, secondary then primary"],answer:0,
+why:"Audit = Brand Inventory (catalog how the brand is marketed, the intended meaning) → Brand Exploratory (what consumers actually think/feel/do).",
+big:"Inventory is the firm-side intended meaning; exploratory is the consumer-side perceived reality. The gap between them is the insight.",
+trap:"Tracking and Management are separate pillars of the measurement system, not the audit's two steps. Prior research/interview are sub-steps WITHIN exploratory."},
+
+{ch:9,diff:"Medium",q:"The three pillars of the Brand Equity Measurement System are:",
+options:["Inventory, Exploratory, and Charter of the brand's meaning","Audit, Tracking, and Management of brand equity over time","Salience, Judgments, and Resonance from the pyramid model","Desirability, Deliverability, and Differentiation of the POD"],answer:1,
+why:"The measurement system has three parts: Brand Audits, Brand Tracking studies, and a Brand Equity Management system.",
+big:"Audits set long-term direction; tracking feeds short-term tactics; management (charter, report, responsibilities) institutionalizes it internally.",
+trap:"Inventory/Exploratory are steps INSIDE the audit, not the three top-level pillars. Don't collapse a sub-level into the system level."},
+
+{ch:9,diff:"Hard",q:"The three criteria for judging qualitative research techniques in the brand exploratory are:",
+options:["Direction, Depth, and Diversity of the elicited responses","Desirability, Deliverability, and Differentiation of insight","Reliability, Validity, and Generalizability of the sample","Recall, Recognition, and Resonance of the brand memory"],answer:0,
+why:"Qualitative techniques are judged on Direction, Depth, and Diversity.",
+big:"These differ from quantitative concerns like reliability/validity; qualitative work trades statistical rigor for richness and range of insight.",
+trap:"Desirability/Deliverability/Differentiation are the POD criteria (Ch 2). Same 'three D' shape, completely different framework. Classic swap trap."},
+
+{ch:9,diff:"Medium",q:"Brand tracking studies differ from brand audits in that tracking is:",
+options:["Deeper and periodic, setting long-term strategic direction","Routine and usually quantitative, feeding short-term tactics","Purely qualitative, exploring consumer motivations in depth","A one-time legal exercise conducted before a product launch"],answer:1,
+why:"Tracking collects information routinely, usually quantitatively, on dimensions the audit identified, to support day-to-day tactical decisions.",
+big:"Audit = deep, periodic, strategic. Tracking = shallow, continuous, tactical. They feed each other but serve different time horizons.",
+trap:"Deep/periodic/strategic describes the AUDIT. Tracking is the opposite: routine, quantitative, short-term. Don't swap their profiles."},
+
+{ch:9,diff:"Hard",q:"The brand inventory step is valuable because it:",
+options:["Reveals what consumers actually feel through in-depth interviews","Suggests what current consumer perceptions may be based on","Statistically tracks awareness scores each quarter over time","Provides the financial valuation needed for licensing deals"],answer:1,
+why:"The inventory catalogs how the brand is marketed and thereby suggests what consumers' current perceptions may be ROOTED in (intended meaning).",
+big:"It also frames the follow-up exploratory research, associations are usually rooted in intended meaning of elements, but not always, and that gap is telling.",
+trap:"'What consumers actually feel' is the EXPLORATORY step. Inventory is firm-side intended meaning; exploratory is consumer-side perceived reality."},
+
+{ch:9,diff:"Medium",q:"Within the brand exploratory, the sequence of activities is:",
+options:["Conduct new research, then review prior research, then interview staff","Study prior research, interview internal personnel, conduct additional research","Interview consumers, then design a tracking study, then audit finances","Build the brand charter, then the equity report, then assign duties"],answer:1,
+why:"Exploratory sequence: study prior research → interview internal personnel → conduct additional (new) research.",
+big:"You exhaust what's already known internally before spending on fresh fieldwork; the internal interviews reveal the intended positioning to test.",
+trap:"You review existing knowledge BEFORE commissioning new research, not after. And the charter/report/duties belong to the management pillar."},
+
+/* ===================== MIXED / CROSS-CHAPTER ===================== */
+{ch:2,diff:"Hard",q:"Communicating the competitive frame of reference through an 'exemplar' means:",
+options:["Stating the product descriptor that follows the brand name","Announcing category benefits the whole category is known for","Referencing a well-known brand to signal category membership","Listing the brand's unique points-of-difference up front"],answer:2,
+why:"An exemplar uses a well-known, noteworthy brand in the category to specify where the new brand belongs ('the Tesla of X').",
+big:"Three ways to communicate category membership: announcing category benefits, using exemplars, and relying on the product descriptor.",
+trap:"The product descriptor and category-benefit announcement are the OTHER two methods. An exemplar specifically borrows a known brand as a reference point."},
+
+{ch:2,diff:"Hard",q:"Laddering, as an approach to updating positioning over time, means:",
+options:["Responding to competitive attacks that threaten your position","Deepening brand meaning to permit further brand expansion","Adding a new point-of-parity to match a rival's advantage","Dropping a dated point-of-difference from the position"],answer:1,
+why:"Laddering = deepening meaning (moving up from functional to emotional to values) to open room for the brand to expand.",
+big:"Laddering is PROACTIVE (grow by deepening); reacting is DEFENSIVE (respond to competitive threats). Pair them as a contrast.",
+trap:"Responding to competitor attacks is REACTING, not laddering. Laddering is the proactive deepening move. This distinction is a known weak spot."},
+
+{ch:2,diff:"Hard",q:"Reacting, in the context of updating positioning, is primarily a response to:",
+options:["Internal pressure to refresh the brand's visual identity","Competitive actions aimed at turning your PODs into POPs","A routine scheduled review of the positioning statement","A shift in the firm's manufacturing or supply strategy"],answer:1,
+why:"Reacting responds to competitive actions, often attempts to neutralize your POD by matching it (turning it into a POP) or building new PODs.",
+big:"Competitors attack by eroding your differentiation. Reacting defends or re-differentiates; laddering, by contrast, deepens meaning proactively.",
+trap:"Reacting is externally driven by rivals, not by internal identity refreshes or scheduled reviews. Laddering (proactive) vs Reacting (defensive)."},
+
+{ch:1,diff:"Hard",q:"Which statement about the brand-product relationship is TRUE?",
+options:["Every product in a market is automatically also a brand","A brand can exist without any underlying product or service","Brands add dimensions that differentiate a product from rivals","Brand and product are interchangeable terms in Keller's usage"],answer:2,
+why:"Brands add differentiating dimensions (rational/tangible or symbolic/intangible) to a product that meets a given need.",
+big:"The product is the substance; the brand is the added meaning. A product can be unbranded, but a brand must attach to some offering.",
+trap:"Not every product is a brand (many are generic/unbranded), and brand≠product. The added-dimensions statement is the accurate one."},
+
+{ch:3,diff:"Medium",q:"On the resonance pyramid, the LEFT side of the pyramid corresponds broadly to the ______ route, and the RIGHT side to the ______ route.",
+options:["Emotional; rational, reversing the usual head-heart split","Rational; emotional, with logic on the left and feeling on the right","Awareness; loyalty, with reach on the left and depth on the right","Firm-side; consumer-side, with strategy left and perception right"],answer:1,
+why:"Left side (performance, judgments) = rational route; right side (imagery, feelings) = emotional route. Both climb toward resonance.",
+big:"A strong brand builds both routes: think and feel. Over-indexing on one side leaves the relationship incomplete.",
+trap:"Don't reverse it: rational is LEFT (performance/judgments), emotional is RIGHT (imagery/feelings). The head-heart split runs left-to-right."},
+
+{ch:8,diff:"Medium",q:"Country-of-origin leverage works by attaching the brand to associations consumers hold about:",
+options:["The retail channel through which the brand is distributed","A geographic location tied to perceived quality or image","A celebrity who happens to come from that country","An event the brand chooses to sponsor in that region"],answer:1,
+why:"Country of origin links the brand to a place, drawing on consumer beliefs about the quality/image of products from that country.",
+big:"Swiss watches, German engineering, Italian fashion: the geographic association pre-loads a credible POD or POP for free.",
+trap:"Channel, celebrity, and event are each separate leveraging mechanisms. Country of origin specifically leverages the geographic association."},
+
+{ch:9,diff:"Hard",q:"John Roberts' brand positioning framework distinguishes among three knowledge structures:",
+options:["Current, Desired, and Optimal brand knowledge structures","Inventory, Exploratory, and Tracking research structures","Rational, Emotional, and Behavioral response structures","Salience, Meaning, and Resonance pyramid structures"],answer:0,
+why:"Roberts contrasts the CURRENT knowledge structure, the DESIRED structure, and testing tactics to reach the OPTIMAL positioning.",
+big:"The exploratory uncovers the current structure; strategy defines the desired; further research tests programs to hit the optimal.",
+trap:"Inventory/exploratory/tracking are research activities, not knowledge structures. Roberts' triad is current → desired → optimal."},
+
+{ch:5,diff:"Medium",q:"Experiential marketing in the product strategy context focuses on:",
+options:["Cutting price to the lowest sustainable level in the category","Engaging customers through sensory, emotional, and relational experiences","Maximizing the number of distribution outlets carrying the product","Standardizing the offering identically across all global markets"],answer:1,
+why:"Experiential marketing engages consumers via sense, feel, think, act, and relate, building meaning beyond functional features.",
+big:"It supports the augmented/potential product levels, where differentiation and brand equity are built, not the generic core.",
+trap:"Experiential marketing is about experience-driven engagement, not price-cutting or outlet-maximizing. Those are different levers."},
+
+{ch:4,diff:"Hard",q:"Which pairing of brand element to its relative strength is accurate?",
+options:["Brand names are usually the easiest element to change over time","Characters transfer flawlessly across all cultures without risk","Packaging can be a strong vehicle for adaptability and change","Slogans offer the strongest legal protectability of all elements"],answer:2,
+why:"Packaging can be readily redesigned, making it a flexible, adaptable element that can be refreshed as needs change.",
+big:"Element strengths differ: names = sticky/hard to change, characters = strong likability but culture-sensitive, slogans = adaptable but not maximally protectable.",
+trap:"Names are hardest to change (not easiest); characters carry cultural risk; slogans aren't the most protectable. Packaging's adaptability is the true one."},
+
+{ch:1,diff:"Medium",q:"The three types of brand associations, by level of abstraction, are attributes, benefits, and:",
+options:["Attitudes, the consumer's overall evaluations of the brand","Awareness, the depth and breadth of brand memory","Anchors, the reference points for pricing decisions","Archetypes, the symbolic personas the brand embodies"],answer:0,
+why:"Associations run attributes → benefits → attitudes, increasing in abstraction. Attitudes are the most abstract, overall evaluations.",
+big:"Attributes describe the product; benefits are what those attributes do for the consumer; attitudes summarize the overall stance.",
+trap:"Awareness is a separate branch (not an association type). The trio is attributes/benefits/attitudes, from concrete to abstract."},
+
+{ch:3,diff:"Hard",q:"Active engagement is called the strongest affirmation of loyalty because the consumer:",
+options:["Repeatedly repurchases the brand at a high category share","Holds a strong personal attachment beyond mere preference","Invests time, energy, or money beyond purchase and consumption","Feels kinship with other users who own the same brand"],answer:2,
+why:"Active engagement = investing resources (time, energy, money) BEYOND what purchase/consumption requires (forums, events, evangelism).",
+big:"It sits at the top of resonance because it converts private loyalty into public, effortful advocacy, the deepest bond.",
+trap:"Repeat purchase is behavioral loyalty; personal attachment is attitudinal; kinship is community. Only investing beyond purchase is active engagement."},
+
+{ch:2,diff:"Medium",q:"A good positioning, per Keller, has 'a foot in the present and a foot in the future,' meaning it should be:",
+options:["Entirely aspirational, describing only where the brand hopes to go","Somewhat aspirational, leaving room for the brand to grow","Strictly literal, describing only what the brand delivers today","Frequently overhauled to match each new market condition"],answer:1,
+why:"Positioning should be somewhat aspirational, grounded in the present but leaving headroom for the brand to grow and improve.",
+big:"Too literal and the brand can't grow; too aspirational and it loses credibility. The 'foot in each' balance keeps it both honest and ambitious.",
+trap:"Fully aspirational loses the present foot; strictly literal loses the future foot. And positioning should change infrequently, not constantly."},
+
+{ch:8,diff:"Easy",q:"Sponsoring an event contributes to brand equity mainly by:",
+options:["Guaranteeing a permanent legal trademark over the event","Becoming linked to the event and improving brand awareness","Removing the need for any other marketing communications","Transferring the firm's production costs onto the event"],answer:1,
+why:"Events have their own associations; sponsorship links the brand to them, boosting awareness and adding/strengthening associations.",
+big:"Fit matters: the event's associations should reinforce the strength, favorability, and uniqueness the brand wants.",
+trap:"Sponsorship doesn't grant trademarks or replace all other marketing. Its value is associative: awareness plus borrowed event meaning."},
+
+{ch:9,diff:"Easy",q:"The overarching goal of a brand equity measurement system is to:",
+options:["Minimize the total cost of the firm's marketing research","Understand the sources and outcomes of brand equity and relate them","Replace qualitative judgment entirely with quantitative dashboards","Certify the brand's trademark portfolio for legal compliance"],answer:1,
+why:"The goal: achieve a full understanding of the SOURCES and OUTCOMES of brand equity and relate the two as much as possible.",
+big:"Sources = awareness and associations (the mind); outcomes = loyalty, margins, extension potential (the market). The system ties cause to effect.",
+trap:"It's not about minimizing research cost or replacing judgment. It's about connecting where equity comes from to what it produces."},
+
+/* ---------- second pass to reach 100: more per chapter ---------- */
+{ch:1,diff:"Easy",q:"Brand equity, in the customer-based (CBBE) view, arises from:",
+options:["The firm's balance-sheet valuation of intangible assets","The differential effect of brand knowledge on consumer response","The total advertising budget spent building the brand","The legal strength of the brand's registered trademark"],answer:1,
+why:"CBBE = the differential effect brand knowledge has on a consumer's response to the marketing of that brand.",
+big:"'Differential' is the key word: it's the difference in response versus an unbranded or fictitiously-named version of the same product.",
+trap:"CBBE is consumer-response-based, not accounting-based. Ad spend and trademark strength are inputs/protections, not the definition of equity."},
+
+{ch:1,diff:"Medium",q:"Positive customer-based brand equity exists when consumers react more favorably to a product when:",
+options:["The brand is identified than when it is not identified","The price is the lowest available in the whole category","The product is physically superior on every attribute","The advertising budget exceeds every rival in the market"],answer:0,
+why:"Positive CBBE = a more favorable response to the marketing when the brand is known/identified than to the same product unbranded.",
+big:"This is why blind taste tests can flip once brands are revealed, the knowledge itself changes the response.",
+trap:"CBBE isn't about lowest price or objectively superior product. It's the lift from knowing the brand, holding the product constant."},
+
+{ch:2,diff:"Easy",q:"Defining the competitive frame of reference is fundamentally about identifying:",
+options:["The target market's demographic and psychographic profile","The nature of competition and the category the brand competes in","The brand's internal mission, vision, and value statements","The firm's channel partners and distribution footprint"],answer:1,
+why:"The competitive frame of reference specifies the category and the set of competitors the brand positions against.",
+big:"Get the frame wrong and every POP/POD is misaimed. The frame determines who your parity and difference points are measured against.",
+trap:"Target market and mission are related steps, but the frame of reference specifically nails the category and competitive set."},
+
+{ch:3,diff:"Easy",q:"Brand salience is fundamentally a measure of:",
+options:["The functional performance quality of the product itself","Aspects of awareness, how easily and often the brand is evoked","The consumer's ultimate emotional attachment to the brand","The financial value of the brand as an intangible asset"],answer:1,
+why:"Salience measures awareness: how readily and in how many situations the brand comes to mind (depth and breadth).",
+big:"It's the foundation block; without salience, none of the higher pyramid blocks can be reached.",
+trap:"Performance is a higher block (functional quality); attachment is near the top. Salience is strictly about awareness at the base."},
+
+{ch:4,diff:"Medium",q:"Memorability as a brand-element criterion is achieved when the element is:",
+options:["Easy to protect from imitation by competing firms","Easy to recognize and easy to recall in buying situations","Rich in specific attribute and benefit information","Flexible enough to be updated as tastes change"],answer:1,
+why:"Memorability = the element is easily recognized and easily recalled, aiding awareness at purchase and consumption moments.",
+big:"Memorability directly serves brand awareness (depth), the base of the pyramid. It's an 'offensive' equity-building criterion.",
+trap:"Protectability, meaningfulness, and adaptability are the other criteria. Memorability is specifically about ease of recognition/recall."},
+
+{ch:5,diff:"Easy",q:"The augmented product level refers to:",
+options:["The basic benefit the customer is really buying","Attributes that exceed customer expectations and differentiate","The minimum features buyers normally expect to receive","The bare generic version stripped of all extras"],answer:1,
+why:"The augmented product includes additional attributes/benefits that go beyond expectations and differentiate the offering.",
+big:"Branding and competitive advantage typically live here and at the 'potential' level, above the expected/generic baseline.",
+trap:"The core is the basic benefit; the expected is the minimum baseline. Augmented is specifically the exceed-expectations layer."},
+
+{ch:8,diff:"Easy",q:"A corporate or family brand can serve as a source of secondary associations through a:",
+options:["Country-of-origin identification of where parts are sourced","Corporate image campaign that links products to the parent","Celebrity endorsement contract signed for a fixed fee","Third-party award granted by an independent reviewer"],answer:1,
+why:"Existing products can be tied to a corporate/family brand, whose image (via corporate image campaigns) becomes a source of equity.",
+big:"Whether leveraging the corporate brand helps depends on fit; it can lift a new product or, if mismatched, add nothing or hurt.",
+trap:"Country of origin, celebrity, and third-party awards are separate mechanisms. The parent-brand route is company/corporate-brand leverage."},
+
+{ch:9,diff:"Medium",q:"'What to track, how to conduct tracking, and how to interpret tracking' are the three organizing questions for:",
+options:["Conducting the brand inventory step of an audit","Designing brand tracking studies within the system","Building the brand charter in the management pillar","Choosing points-of-difference during positioning"],answer:1,
+why:"Designing tracking studies is organized around what to track, how to conduct, and how to interpret the tracking data.",
+big:"'What to track' includes product/corporate/global brand tracking and key benchmarks; 'how' covers whom, when, and where.",
+trap:"The inventory catalogs marketing; the charter documents guidelines. These three questions specifically structure TRACKING design."},
+
+{ch:1,diff:"Hard",q:"Which of the following is an OUTCOME (branding benefit) of strong brand equity, not a source of it?",
+options:["Strong, favorable, and unique brand associations in memory","Deep and broad awareness spanning many usage situations","Greater loyalty and lower vulnerability to competitive actions","Clear category identification linked to the product class"],answer:2,
+why:"Greater loyalty and reduced vulnerability are OUTCOMES/benefits of equity. Awareness and associations are SOURCES that create equity.",
+big:"Keller separates knowledge effects (sources: awareness + associations) from branding benefits (outcomes: loyalty, margins, extension potential).",
+trap:"Associations, awareness, and category identification are all sources. Only loyalty/reduced-vulnerability is on the outcome side of the ledger."},
+
+{ch:2,diff:"Medium",q:"A brand's positioning recognizes a 'duality,' meaning it must balance:",
+options:["Domestic and international frames of reference at once","Rational and emotional components of the brand's appeal","Premium and value price tiers within one line","Push and pull channel communication strategies"],answer:1,
+why:"Good positioning recognizes a duality of rational and emotional components, both must be addressed.",
+big:"This mirrors the resonance pyramid's left (rational) and right (emotional) routes. Positioning and the pyramid rhyme intentionally.",
+trap:"Push/pull is a channel concept; premium/value is pricing. The positioning duality is specifically rational vs emotional."},
+
+{ch:3,diff:"Medium",q:"Brand credibility, as a judgment sub-dimension, is built on perceptions of the brand's:",
+options:["Expertise, trustworthiness, and likability","Quality, consideration, and superiority combined","Salience, breadth, and depth of awareness","Warmth, excitement, and social approval"],answer:0,
+why:"Credibility rests on perceived expertise (competent), trustworthiness (dependable), and likability (fun/worth spending time with).",
+big:"Credibility is one of four judgments (quality, credibility, consideration, superiority) and feeds the consumer's overall evaluation.",
+trap:"Warmth/excitement/social approval are FEELINGS, not judgment components. Credibility's three parts are expertise, trust, likability."},
+
+{ch:4,diff:"Easy",q:"Likability as a brand-element criterion asks whether the element is:",
+options:["Legally defensible against competitor imitation","Aesthetically appealing, rich, and visually or verbally engaging","Able to carry equity into new categories and countries","Loaded with specific persuasive attribute information"],answer:1,
+why:"Likability = how aesthetically appealing, fun, interesting, and rich the element is (visually, verbally, otherwise).",
+big:"Likability joins memorability and meaningfulness as the three offensive, equity-building criteria for choosing elements.",
+trap:"Legal defense is protectability; carrying equity across borders is transferability; persuasive info is meaningfulness. Likability is appeal."},
+
+{ch:5,diff:"Hard",q:"Value-based pricing supports brand equity better than cost-plus pricing chiefly because it:",
+options:["Guarantees the lowest price in the competitive category","Aligns price with the perceived value the brand delivers","Ignores consumer perceptions to protect internal margins","Sets price purely by matching the nearest competitor"],answer:1,
+why:"Value pricing ties price to perceived value, capturing the equity premium consumers are willing to pay.",
+big:"Cost-plus leaves money on the table when equity is strong; value pricing monetizes the very brand knowledge that created the equity.",
+trap:"Value pricing isn't about being cheapest or matching rivals, and it centers (not ignores) consumer perception. That's the whole point."},
+
+{ch:8,diff:"Hard",q:"A celebrity endorser can undermine a brand when the endorser:",
+options:["Has high visibility and a rich set of useful associations","Endorses so many products that they lack specific meaning","Fits the product category naturally and credibly","Maintains a stable, scandal-free public reputation"],answer:1,
+why:"Over-endorsing dilutes a celebrity's specific meaning and can make them look opportunistic or insincere, weakening the link.",
+big:"Effective endorsers need visibility, useful associations, AND fit; mismatch or overexposure erodes the borrowed equity.",
+trap:"High visibility, category fit, and a clean reputation are what you WANT. The failure mode is over-endorsement and loss of specific meaning."},
+
+{ch:9,diff:"Hard",q:"Which sequence correctly nests the concepts from broadest to narrowest?",
+options:["Brand audit > measurement system > brand inventory > exploratory","Measurement system > brand audit > brand inventory > prior research","Brand inventory > measurement system > brand audit > tracking","Brand exploratory > brand audit > measurement system > tracking"],answer:1,
+why:"System (broadest) → Audit (one of three pillars) → Inventory (one of two audit steps) → Prior research (an activity within exploratory... nested deepest).",
+big:"Hierarchy discipline: Measurement System ⊃ {Audit, Tracking, Management}; Audit ⊃ {Inventory, Exploratory}; Exploratory ⊃ {prior research, interviews, new research}.",
+trap:"The audit is INSIDE the system, not above it. Any ordering that puts inventory or exploratory above the system inverts the nesting."},
+
+{ch:1,diff:"Medium",q:"Which is the best example of a symbolic (rather than functional) brand benefit?",
+options:["A detergent that removes stains in a single wash cycle","A watch that signals the wearer's status and taste","A phone battery that lasts a full working day","A tire that stops the car in a shorter distance"],answer:1,
+why:"Status/taste signaling is a symbolic benefit tied to self-expression and imagery, not to what the product functionally does.",
+big:"Functional benefits map to performance; symbolic (and experiential) benefits map to imagery and feelings on the pyramid's right side.",
+trap:"Stain removal, battery life, and stopping distance are all functional performance benefits. Only status signaling is symbolic."},
+
+{ch:2,diff:"Easy",q:"Points-of-difference are formally defined as attributes or benefits that consumers:",
+options:["Strongly associate with the brand and believe they can't get elsewhere","Share equally across all brands competing in the category","Consider irrelevant to their actual purchase decision","Use only to establish basic category membership"],answer:0,
+why:"PODs are attributes/benefits consumers strongly associate with the brand and positively evaluate, believing they can't get them to the same degree elsewhere.",
+big:"PODs are your reasons-to-choose; POPs are your reasons-you're-eligible. Strong brands need both, but PODs drive preference.",
+trap:"Shared-across-brands and category-membership describe POPs, not PODs. And a POD must be relevant, not irrelevant, to the decision."},
+
+{ch:3,diff:"Easy",q:"The right side of the resonance pyramid (imagery, feelings) primarily builds brand meaning and response through:",
+options:["Objective, functional, performance-based reasoning","Emotional and experiential, more intangible pathways","Legal and contractual protection of the brand","Distribution intensity and channel coverage"],answer:1,
+why:"The right side runs the emotional route: imagery (symbolic associations) and feelings (emotional responses).",
+big:"Left side = rational (performance, judgments); right side = emotional (imagery, feelings). A complete brand climbs both toward resonance.",
+trap:"Functional reasoning is the LEFT side. Legal protection and distribution aren't pyramid routes at all."},
+
+{ch:4,diff:"Hard",q:"An abstract, non-descriptive brand name (like a coined word) trades off:",
+options:["Higher meaningfulness for lower transferability across categories","Lower initial meaningfulness for higher transferability across categories","Higher protectability for lower memorability at purchase","Lower likability for higher legal defensibility over rivals"],answer:1,
+why:"Coined/abstract names start with less built-in meaning but transfer easily across categories since they aren't tied to one product world.",
+big:"Descriptive names pre-load meaning but box you in; abstract names are blank canvases that need ad investment to fill but stretch anywhere.",
+trap:"The trade-off runs meaningfulness (down) for transferability (up), not the reverse. Abstraction sacrifices built-in meaning to gain reach."},
+
+{ch:5,diff:"Medium",q:"Channel design that integrates both push and pull is preferred because it:",
+options:["Eliminates the need to invest in any consumer advertising","Combines trade support with consumer demand for stronger equity","Focuses all resources on a single intermediary partner","Guarantees the product the lowest shelf price available"],answer:1,
+why:"Integrating push (trade incentives) and pull (consumer demand) gives the brand both distribution support and end-user preference.",
+big:"Strong brands rarely rely on push or pull alone; the combination reinforces availability AND desirability simultaneously.",
+trap:"Integration doesn't eliminate consumer advertising, it includes it (that's the pull half). Nor is it about a single partner or lowest price."},
+
+{ch:8,diff:"Medium",q:"Third-party sources (awards, reviews) are valuable secondary associations mainly because they are:",
+options:["Fully controlled by the firm's own marketing department","Perceived as especially credible and independent by consumers","Guaranteed to be positive once the brand pays for them","The only legal way to establish category membership"],answer:1,
+why:"Third-party sources carry credibility precisely because they're seen as independent of the firm, making the endorsement more persuasive.",
+big:"Marketers feature these in advertising because borrowed credibility from an outside judge outweighs self-praise.",
+trap:"Their power comes from NOT being firm-controlled. If they were paid-for and guaranteed positive, they'd lose the credibility that makes them work."},
+
+{ch:9,diff:"Easy",q:"A brand equity management system is established chiefly to:",
+options:["Replace the brand audit with a cheaper alternative method","Capture the value of research through internal structures and procedures","Handle the legal registration of trademarks worldwide","Set the final retail price of every product in the line"],answer:1,
+why:"The management system gives the firm the internal structures/procedures (charter, equity report, responsibilities) to act on audit and tracking insights.",
+big:"Without it, research findings sit unused; the management pillar institutionalizes brand thinking across the organization.",
+trap:"It complements (not replaces) the audit, and it's about internal governance of equity, not trademark filing or pricing."},
+
+{ch:1,diff:"Easy",q:"Brands can be applied to which of the following?",
+options:["Physical goods only, since services cannot carry a brand","Goods, services, retailers, people, places, and ideas alike","Only consumer products, never business-to-business offerings","Only products with a registered legal trademark on file"],answer:1,
+why:"Anything can be branded, physical goods, services, stores, people, places, organizations, and ideas.",
+big:"This breadth is why brand management principles apply far beyond CPG; a city or a person can build equity the same way.",
+trap:"Services, B2B offerings, and even unregistered marks can all be branded. The scope of branding is deliberately broad."},
+
+{ch:2,diff:"Hard",q:"When a brand faces negatively correlated attributes, 'redefining the relationship' means:",
+options:["Dropping whichever attribute tests weaker with consumers","Convincing consumers the two attributes are actually compatible","Buying another brand that already owns both attributes","Splitting the two attributes across two separate campaigns"],answer:1,
+why:"Redefining the relationship persuades consumers that attributes they thought were opposed can in fact coexist in the brand.",
+big:"It's the most elegant of the three fixes because it changes the mental model rather than sidestepping it (separating) or borrowing (leveraging).",
+trap:"Splitting across campaigns is 'separating the attributes'; borrowing another entity is 'leveraging equity.' Redefining changes the perceived link itself."},
+
+{ch:3,diff:"Hard",q:"The four value-chain multipliers determine how value moves between stages. The multiplier that gates the move from MARKET PERFORMANCE to SHAREHOLDER VALUE is:",
+options:["The program-quality multiplier of marketing caliber","The marketplace-conditions multiplier of competitive context","The investor-sentiment multiplier of financial-market mood","The brand-awareness multiplier of consumer reach"],answer:2,
+why:"Investor sentiment gates the final transition, market performance into shareholder value, reflecting how the market prices the brand's prospects.",
+big:"Chain: Investment →(program quality)→ Mindset →(marketplace conditions)→ Market performance →(investor sentiment)→ Shareholder value.",
+trap:"Program quality gates the FIRST transition, marketplace conditions the MIDDLE. Only investor sentiment gates the leap to shareholder value."},
+
+{ch:4,diff:"Medium",q:"Adaptability as a brand-element criterion refers to how:",
+options:["Well the element can be legally protected from copycats","Updatable and flexible the element is as consumer tastes shift","Much specific attribute information the element conveys","Broadly the element carries equity into new countries"],answer:1,
+why:"Adaptability = how flexible and updatable the element is over time as consumer values and tastes evolve.",
+big:"Logos and packaging tend to score high on adaptability; deeply-encoded names score lower because changing them is disruptive.",
+trap:"Legal protection is protectability; carrying equity abroad is transferability; conveying attributes is meaningfulness. Adaptability is about aging/updating."},
+
+{ch:5,diff:"Easy",q:"The 'core benefit' level of a product represents:",
+options:["The extra features that exceed customer expectations","The fundamental need or benefit the customer is truly buying","The bundle of attributes buyers normally expect","The future transformations the product might undergo"],answer:1,
+why:"The core benefit is the fundamental service/benefit the customer is really buying (the 'job' the product does).",
+big:"Everything above it (generic, expected, augmented, potential) layers additional meaning onto that irreducible core.",
+trap:"Exceeding expectations is augmented; future transformations are potential; the expected bundle is the expected product. Core is the base need."},
+
+{ch:8,diff:"Easy",q:"Social media influencers are treated in the text as:",
+options:["A separate mechanism unrelated to celebrity endorsement","A modern extension of celebrity endorsement, including micro-influencers","A form of event sponsorship rather than endorsement","A third-party award source granting independent credibility"],answer:1,
+why:"Influencers, including micro/non-celebrity influencers, are framed as the new celebrities for endorsement-style leverage.",
+big:"They work through the same endorsement logic: borrowed associations and reach, sometimes with higher perceived authenticity than A-list stars.",
+trap:"They're an evolution of endorsement, not sponsorship or third-party awards. The mechanism is still celebrity-style endorsement."},
+
+{ch:9,diff:"Medium",q:"A useful classroom exercise for a digital brand asset inventory involves examining a brand's:",
+options:["Financial statements filed with securities regulators","Presence and consistency across its social media touchpoints","Manufacturing supply chain and vendor contracts","Internal HR structure and brand-management job titles"],answer:1,
+why:"The exercise assembles a digital asset inventory across social channels to reveal consistency across the brand's touchpoints.",
+big:"Consistency (or its absence) across touchpoints is a core inventory insight: mixed signals across channels dilute intended meaning.",
+trap:"Financials, supply chain, and HR structure aren't the digital inventory. The focus is the brand's public presence across social platforms."},
+
+{ch:1,diff:"Medium",q:"Which best captures why brands reduce risk for consumers?",
+options:["They lower the sticker price of the product at checkout","They serve as a quality signal that simplifies the decision","They guarantee legal recourse for every faulty purchase","They eliminate all functional differences between products"],answer:1,
+why:"Brands signal expected quality and consistency, reducing the perceived risk (functional, financial, social, psychological) of choosing.",
+big:"This risk-reduction role is a consumer-side benefit; it lowers search and evaluation effort by standing in for direct experience.",
+trap:"Brands don't lower price or guarantee legal recourse, and they often preserve (not eliminate) real product differences. Risk cut comes from the quality signal."},
+
+{ch:3,diff:"Medium",q:"'Share of category requirements' is used to operationalize which resonance sub-dimension?",
+options:["Attitudinal attachment, the strength of personal bond","Behavioral loyalty, the repeat-purchase share of volume","Sense of community, the affiliation among users","Active engagement, investment beyond consumption"],answer:1,
+why:"Share of category requirements measures repeat purchase / share of category volume, the operational definition of behavioral loyalty.",
+big:"It captures how much of a consumer's category spending the brand commands, the observable, transactional loyalty layer.",
+trap:"Attachment, community, and engagement are deeper/qualitative layers. Share of category requirements is specifically behavioral loyalty."},
+
+{ch:5,diff:"Hard",q:"Everyday Low Pricing (EDLP) primarily aims to build brand equity by:",
+options:["Maximizing the frequency of deep promotional discounts","Providing stable, consistent value that reduces channel gaming","Concentrating all margin into a single seasonal sale","Matching each competitor's promotion dollar for dollar"],answer:1,
+why:"EDLP offers a consistently low price, reducing the volatility that drives forward buying and diverting and building trust in fair value.",
+big:"Stable pricing supports a value-based image; constant high-low promotion can train consumers to buy only on deal, eroding equity.",
+trap:"EDLP is the opposite of maximizing promotions or seasonal spikes. Its whole logic is stability, not high-low deal frequency."},
+
+{ch:8,diff:"Medium",q:"Leveraging secondary associations can help a brand by creating or reinforcing:",
+options:["Only points-of-difference, never points-of-parity","Either a point-of-difference or a needed point-of-parity","Only awareness, never any specific association","Only legal protections for the brand's trademarks"],answer:1,
+why:"Secondary associations can create or reinforce an important POD OR a necessary competitive POP versus rivals.",
+big:"That flexibility is why leverage is so useful: borrow a difference where you need to stand out, or borrow parity where you need to catch up.",
+trap:"It's not POD-only. Borrowed associations can shore up parity just as readily as they can sharpen difference."},
+
+{ch:9,diff:"Hard",q:"A brand exploratory reveals a large gap between the brand inventory's intended meaning and consumers' actual perceptions. This gap most directly signals:",
+options:["That the brand's trademarks are legally unprotected","A disconnect between how the brand is marketed and how it's understood","That the tracking study used the wrong sample size","That the brand's financial valuation is overstated"],answer:1,
+why:"Inventory = intended meaning (firm side); exploratory = perceived meaning (consumer side). A gap means marketing intent isn't landing as understood.",
+big:"That disconnect is exactly what the audit exists to surface; closing it is the strategic work that follows.",
+trap:"The gap is about meaning transmission, not trademarks, sampling, or valuation. It's the intended-vs-perceived divergence."},
+
+{ch:2,diff:"Medium",q:"Which is the correct order of the four components in establishing brand positioning?",
+options:["Basic concepts, target market, nature of competition, then POPs and PODs","Target market, POPs and PODs, basic concepts, then competition","Nature of competition, basic concepts, POPs and PODs, then target","POPs and PODs, target market, competition, then basic concepts"],answer:0,
+why:"Positioning is established through: (1) basic concepts, (2) target market, (3) nature of competition, (4) points-of-parity and points-of-difference.",
+big:"You define what positioning is, for whom, against whom, and then finally what's shared vs distinct, each step feeds the next.",
+trap:"POPs/PODs come LAST, after you've defined the target and the competitive frame. Starting with POPs/PODs skips the necessary setup."},
+
+{ch:3,diff:"Easy",q:"The single ultimate goal at the top of the resonance pyramid is:",
+options:["Brand salience, ensuring the brand is easily recalled","Brand resonance, the intense, active relationship with customers","Brand performance, meeting functional needs reliably","Brand judgments, favorable rational evaluations"],answer:1,
+why:"Resonance sits at the apex, the ultimate relationship and identification a customer has with the brand.",
+big:"Everything below (salience, performance/imagery, judgments/feelings) is scaffolding to reach resonance's four categories.",
+trap:"Salience is the BASE, not the apex. Performance and judgments are mid-pyramid. Only resonance is the top-of-pyramid goal."},
+
+{ch:4,diff:"Easy",q:"Which set correctly lists three of the six brand-element criteria?",
+options:["Memorability, Meaningfulness, and Likability","Salience, Performance, and Resonance","Direction, Depth, and Diversity","Desirability, Deliverability, and Differentiation"],answer:0,
+why:"Memorability, Meaningfulness, and Likability are three of the six element criteria (the three offensive ones).",
+big:"The other three are transferability, adaptability, protectability (the defensive trio). Six total.",
+trap:"Salience/Performance/Resonance are pyramid blocks; Direction/Depth/Diversity are qualitative-research criteria; the three D's are POD criteria. Only the first set is element criteria."},
+
+{ch:5,diff:"Medium",q:"Which pricing approach is LEAST supportive of long-term brand equity?",
+options:["Value-based pricing anchored on perceived benefits","Frequent deep discounting that trains deal-seeking behavior","Premium pricing justified by genuine points-of-difference","Stable everyday pricing that signals consistent value"],answer:1,
+why:"Frequent deep discounting trains consumers to buy only on promotion, eroding perceived value and reference prices over time.",
+big:"Value, premium (when justified), and stable pricing all reinforce equity; chronic discounting undermines it by anchoring low.",
+trap:"Value, premium, and EDLP-style stability all support equity. The equity-killer is the high-low deal treadmill."},
+
+{ch:8,diff:"Hard",q:"Which is the correct mechanism-to-entity pairing for leveraging secondary associations?",
+options:["Characters are leveraged through event sponsorship deals","Other brands are leveraged through co-branding alliances","Celebrities are leveraged through country-of-origin cues","Events are leveraged through licensing agreements"],answer:1,
+why:"Other brands attach through co-branding. Characters attach through licensing; celebrities through endorsement; events through sponsorship.",
+big:"Each entity has its signature mechanism; scrambling them is a favorite exam trick. Memorize the entity→mechanism map.",
+trap:"Characters→licensing (not sponsorship), celebrities→endorsement (not country cues), events→sponsorship (not licensing). Only other-brands→co-branding is right."},
+
+{ch:9,diff:"Medium",q:"Brand audits are best scheduled:",
+options:["Continuously, as a real-time daily data feed","Periodically, when setting or revisiting strategic direction","Only once, at the moment a brand is first launched","Exclusively during a merger or acquisition process"],answer:1,
+why:"Audits are periodic deep-dives, run when the firm sets or reconsiders long-term strategic direction, not continuously.",
+big:"Continuous, real-time monitoring is the job of TRACKING. The audit is the occasional comprehensive health check.",
+trap:"Daily real-time data is tracking; a one-time launch check is too narrow. Audits recur periodically around strategic inflection points."},
+
+{ch:1,diff:"Hard",q:"'Brand associations' and 'brand image' relate to each other such that:",
+options:["Image and associations are two unrelated branches of knowledge","Associations are the building blocks that collectively form the image","Image sits below associations as a narrower sub-component","Associations exist only within awareness, not within image"],answer:1,
+why:"Brand image is the set of perceptions reflected by the brand associations held in memory, associations are its building blocks.",
+big:"Knowledge = Awareness + Image; Image is made up of associations (attributes, benefits, attitudes) with strength, favorability, uniqueness.",
+trap:"Associations sit UNDER image (they compose it), not the reverse, and they belong to image, not awareness. This hierarchy is a flagged weak spot."},
+
+{ch:2,diff:"Easy",q:"The purpose of establishing points-of-parity is largely to:",
+options:["Give consumers a unique reason to prefer this brand","Negate competitors' PODs or establish category membership","Raise the brand's price above every competitor","Replace the need for any points-of-difference"],answer:1,
+why:"POPs establish category membership and/or negate competitors' PODs (removing a reason NOT to choose you).",
+big:"POPs get you into the game; PODs win it. A brand missing key POPs can be dismissed before its PODs even get considered.",
+trap:"Unique reasons-to-prefer are PODs. POPs don't raise price or replace PODs; they clear the table-stakes so PODs can matter."},
+
+{ch:3,diff:"Hard",q:"Which correctly maps a pyramid block to its brand-building STEP?",
+options:["Salience corresponds to the meaning step of brand building","Performance and imagery correspond to the identity step","Judgments and feelings correspond to the response step","Resonance corresponds to the meaning step of brand building"],answer:2,
+why:"Judgments + Feelings = the RESPONSE step ('what about you?'). The four steps: identity (salience), meaning (performance/imagery), response (judgments/feelings), relationship (resonance).",
+big:"Each step answers a customer question: Who are you? What are you? What about you? and What about you and me?",
+trap:"Salience is identity (not meaning); performance/imagery is meaning (not identity); resonance is relationship (not meaning). Only judgments/feelings→response is correct."},
+
+{ch:4,diff:"Medium",q:"Protectability as a brand-element criterion has two senses, legal and competitive, meaning the element should be defensible both:",
+options:["In court and against competitive imitation or genericization","In price and against retailer private-label copies","In memory and against consumer forgetting over time","In transfer and against cross-cultural misreading"],answer:0,
+why:"Protectability = legally protectable (trademarkable) AND competitively protectable (resistant to being copied or becoming generic).",
+big:"Names that become generic (aspirin, escalator) lost competitive protectability even where legal marks once existed, watch for genericide.",
+trap:"The two senses are legal and competitive, not price/memory/transfer. Protectability guards ownership and distinctiveness, not recall or reach."},
+
+{ch:5,diff:"Easy",q:"A pull strategy succeeds when:",
+options:["Intermediaries are incentivized to stock and promote the brand","Consumer demand is strong enough to draw the product through the channel","The firm sells directly to regulators for approval","The product is priced below every competitor on the shelf"],answer:1,
+why:"Pull works by building consumer demand so shoppers seek out the brand, pulling it through retailers who then must stock it.",
+big:"Push targets the trade; pull targets the consumer. The strongest brands generate pull so intermediaries compete to carry them.",
+trap:"Incentivizing intermediaries is PUSH. Pull is consumer-demand-driven, and it isn't about lowest price or regulators."},
+
+{ch:8,diff:"Easy",q:"Which is one of the eight sources of secondary brand associations?",
+options:["The firm's internal accounting department","Channels of distribution through channel strategy","The consumer's own prior purchase history","The brand's registered trademark filing"],answer:1,
+why:"Channels of distribution (via channel strategy) is one of the eight sources, alongside company, country, other brands, characters, celebrities, events, third-party sources.",
+big:"Where a brand is sold shapes its meaning; a prestige retailer lends prestige, a discount channel lends value connotations.",
+trap:"Internal accounting, purchase history, and trademark filings aren't secondary-association sources. Channels of distribution is the listed one."},
+
+{ch:9,diff:"Easy",q:"Which pillar of the measurement system is most concerned with SHORT-TERM tactical decisions?",
+options:["Brand audit, the periodic strategic deep-dive","Brand tracking, the routine ongoing data collection","Brand charter, the internal guidelines document","Brand exploratory, the consumer perception study"],answer:1,
+why:"Tracking collects routine (usually quantitative) data to support short-term, day-to-day tactical decisions.",
+big:"Audit = long-term strategic; tracking = short-term tactical; management = internal governance. Match the tool to the time horizon.",
+trap:"The audit (and its exploratory step) is strategic/periodic; the charter is governance. Only tracking is the short-term tactical feed."},
+
+{ch:1,diff:"Easy",q:"Which is the clearest example of positive customer-based brand equity in action?",
+options:["Two identical colas, but consumers prefer the named one when the brand is shown","A cola that costs less to manufacture than its competitor","A cola with a larger factory and wider distribution network","A cola whose trademark is registered in more countries"],answer:0,
+why:"When consumers prefer the branded version of an identical product once the brand is revealed, that lift is CBBE in action.",
+big:"The classic demonstration: blind vs identified taste tests where preference flips on brand reveal, knowledge changing response.",
+trap:"Lower cost, bigger distribution, and more trademarks are firm-side facts, not demonstrations of the consumer-response lift that defines CBBE."},
+
+{ch:2,diff:"Medium",q:"Which is the strongest sign that a chosen point-of-difference fails the DELIVERABILITY criterion?",
+options:["Consumers say they don't want that benefit at all","Competitors already own that exact benefit in consumers' minds","The firm cannot actually provide the benefit profitably and credibly","The benefit is easy for any rival to copy immediately"],answer:2,
+why:"Deliverability asks whether the firm can actually and credibly provide the benefit; if it can't, the POD fails on deliverability.",
+big:"Desirability (consumers want it) and differentiation (it's distinct) are separate tests. A POD must pass all three D's.",
+trap:"'Consumers don't want it' fails desirability; 'rivals own it/copy it' fails differentiation. Only 'the firm can't provide it' fails deliverability."},
+
+{ch:3,diff:"Medium",q:"Brand superiority, as a judgment, specifically measures the extent to which customers view the brand as:",
+options:["Easy to recall from the product category unaided","Unique and better than the other brands available","Emotionally warm and socially approved by peers","Widely distributed across many retail channels"],answer:1,
+why:"Superiority measures whether customers see the brand as unique and better than competitors, a judgment sub-dimension.",
+big:"Superiority is a strong preference signal, closely tied to whether PODs are landing as intended.",
+trap:"Unaided recall is salience; warmth/social approval are feelings; distribution is a channel fact. Superiority is the 'unique and better' judgment."},
+
+{ch:4,diff:"Medium",q:"Which brand element tends to be MOST difficult to change once established?",
+options:["The logo, because it is visually distinctive","The slogan, because it appears in advertising","The brand name, because it is deeply encoded and entangled","The package, because it sits on the retail shelf"],answer:2,
+why:"The brand name is hardest to change, deeply encoded in memory and tied to legal, commercial, and equity considerations.",
+big:"Logos, slogans, and packaging are comparatively flexible; firms refresh them regularly without the upheaval of a name change.",
+trap:"Logos, slogans, and packaging are all more changeable. The name is the sticky one, changing it risks severing existing equity."},
+
+{ch:5,diff:"Hard",q:"A brand runs constant high-low promotions and finds consumers now buy only during deals. In value-chain/equity terms this reflects:",
+options:["Strengthened behavioral loyalty through repeat deal purchases","Eroded perceived value as low prices reset reference points","Improved points-of-difference from the promotional excitement","Higher deliverability of the brand's core benefit"],answer:1,
+why:"Chronic discounting resets consumers' internal reference prices downward and trains deal-seeking, eroding perceived value and equity.",
+big:"This is exactly the pathology EDLP is designed to avoid; loyalty to the DEAL is not loyalty to the BRAND.",
+trap:"Buying only on deal is not genuine behavioral loyalty, it's deal loyalty. And it weakens, not strengthens, perceived value and PODs."},
+
+{ch:8,diff:"Medium",q:"Country-of-origin associations are LEAST likely to help when:",
+options:["The country has a strong reputation for that product type","Consumers know little about the product and rely on cues","The country's image conflicts with the brand's desired positioning","The category is one the country is globally admired for"],answer:2,
+why:"When the country's image conflicts with the desired positioning, the origin association hurts rather than helps.",
+big:"Fit is everything in leverage: congruent origin lifts the brand; incongruent origin drags it or must be actively downplayed.",
+trap:"Strong reputation, low consumer knowledge, and admired categories all HELP. Only a conflicting country image undermines the leverage."},
+
+{ch:9,diff:"Medium",q:"Which best distinguishes qualitative from quantitative brand research in the exploratory?",
+options:["Qualitative is judged on reliability and statistical validity","Qualitative is judged on direction, depth, and diversity of insight","Qualitative is always cheaper and faster with larger samples","Qualitative replaces the need for any tracking studies"],answer:1,
+why:"Qualitative techniques are judged on direction, depth, and diversity, trading statistical rigor for richness and range.",
+big:"Quantitative work (often in tracking) prizes reliability/validity and larger samples; qualitative work prizes depth of understanding.",
+trap:"Reliability/validity are quantitative concerns. Qualitative doesn't rely on large samples and doesn't replace tracking."},
+
+{ch:1,diff:"Medium",q:"Which is the best description of 'brand image'?",
+options:["How easily the brand is recalled from the category","Consumer perceptions reflected by associations held in memory","The intended meaning the firm builds into its elements","The legal set of trademarks the firm has registered"],answer:1,
+why:"Brand image = consumer perceptions of the brand as reflected by the brand associations held in memory.",
+big:"Note the consumer-side framing: image is what's PERCEIVED, distinct from the firm's INTENDED meaning captured in the inventory.",
+trap:"Ease of recall is awareness/salience; intended meaning is the inventory's firm-side view. Image is the perceived-association side."},
+
+{ch:3,diff:"Medium",q:"Which sub-dimension belongs to brand IMAGERY (not performance)?",
+options:["Product reliability, durability, and serviceability","User profiles and purchase/usage situations","Primary ingredients and supplementary features","Service efficiency, effectiveness, and empathy"],answer:1,
+why:"Imagery includes user profiles, usage situations, personality/values, and history/heritage, the extrinsic, symbolic meanings.",
+big:"Performance covers the intrinsic/functional (reliability, features, service quality); imagery covers the extrinsic/symbolic.",
+trap:"Reliability, ingredients/features, and service quality are all PERFORMANCE. Only user/usage imagery is on the imagery side."},
+
+{ch:2,diff:"Hard",q:"'Separating the attributes' as a fix for negatively correlated POP/PODs works by:",
+options:["Persuading consumers the attributes can coexist in one product","Presenting each attribute in a different context or campaign","Acquiring a second brand that already holds both attributes","Dropping the attribute that performs worse in testing"],answer:1,
+why:"Separating the attributes presents them in different contexts/communications so they don't directly collide in the consumer's mind.",
+big:"It's one of three fixes: separate (compartmentalize), leverage (borrow another entity), or redefine (change the perceived link).",
+trap:"Persuading coexistence is 'redefining'; acquiring a brand relates to 'leveraging.' Separating specifically compartmentalizes the two attributes."},
+
+{ch:5,diff:"Medium",q:"Which of the following best exemplifies operating at the 'potential' product level?",
+options:["Meeting the minimum features buyers already expect","Delivering the basic core benefit the customer buys","Exploring future transformations the offering might undergo","Providing the stripped-down generic version of the product"],answer:2,
+why:"The potential product encompasses all the augmentations and transformations the offering might undergo in the future.",
+big:"It's the frontier of innovation and differentiation, beyond even the augmented level, where tomorrow's PODs are invented.",
+trap:"Minimum expected features = expected level; core benefit = core; generic version = generic. Only future transformations = potential."},
+
+{ch:9,diff:"Hard",q:"A firm wants day-to-day data on awareness and key associations to steer this quarter's tactics. The correct tool is:",
+options:["A full brand audit with inventory and exploratory","An ongoing brand tracking study, mostly quantitative","A one-time brand charter documenting guidelines","A brand valuation for the annual financial report"],answer:1,
+why:"Routine, mostly quantitative day-to-day tactical data is exactly what brand tracking studies provide.",
+big:"Audits are periodic and strategic; the charter is governance; valuation is financial. Only tracking fits the short-term tactical need.",
+trap:"Running a full audit for quarterly tactics is overkill and mistimed. The charter and valuation don't provide ongoing tactical data. Tracking does."},
+
+{ch:1,diff:"Easy",q:"Which of these is a consumer-side role of brands, per Keller?",
+options:["Legal protection of unique product features via trademark","Identification of the source or maker of a product","A competitive advantage barrier the firm can defend","A financial asset recorded among intangible assets"],answer:1,
+why:"Identifying the source/maker of a product is a consumer-side role, it tells the buyer who stands behind the offering.",
+big:"Consumer roles: identification, risk reduction, search-cost reduction, quality signal, self-expression. Firm roles: legal protection, competitive advantage, financial value.",
+trap:"Legal protection, competitive-advantage barriers, and financial-asset status are all FIRM-side roles. Source identification is the consumer-side one."},
+
+{ch:4,diff:"Hard",q:"The 'offensive' brand-element criteria (used to BUILD equity) are:",
+options:["Transferability, Adaptability, and Protectability","Memorability, Meaningfulness, and Likability","Desirability, Deliverability, and Differentiation","Direction, Depth, and Diversity"],answer:1,
+why:"Memorability, Meaningfulness, and Likability are the offensive trio that actively build equity.",
+big:"Transferability, adaptability, and protectability are the defensive trio that protect and extend equity once built.",
+trap:"The three D's are POD criteria; Direction/Depth/Diversity are research criteria. Only memorability/meaningfulness/likability are the offensive element criteria."},
+
+{ch:3,diff:"Easy",q:"Which correctly orders the FOUR brand-building steps (customer questions) from bottom to top?",
+options:["What about you and me? → What about you? → What are you? → Who are you?","Who are you? → What are you? → What about you? → What about you and me?","What are you? → Who are you? → What about you and me? → What about you?","Who are you? → What about you? → What are you? → What about you and me?"],answer:1,
+why:"Bottom to top: Who are you? (identity/salience) → What are you? (meaning) → What about you? (response) → What about you and me? (relationship/resonance).",
+big:"The four questions map exactly onto the pyramid tiers and give you a fast way to reconstruct the whole model under exam pressure.",
+trap:"The order climbs from identity to relationship. Any sequence that starts with the relationship question or scrambles the middle is inverted."},
+
+{ch:8,diff:"Hard",q:"A brand with weak equity of its own benefits MOST from leveraging a strong secondary association when:",
+options:["Consumers are experts who scrutinize every attribute closely","Consumers lack the motivation or ability to judge the product directly","The linked entity's image sharply conflicts with the brand","The brand already dominates the category on every metric"],answer:1,
+why:"Borrowed associations do the most work when consumers can't or won't evaluate the product on its own merits, so they lean on the linked entity.",
+big:"This is the core condition for leverage effectiveness; it's why endorsements and origin cues sway low-involvement categories most.",
+trap:"Experts lean less on borrowed cues; conflicting images hurt; a dominant brand needs less help. Low motivation/ability is the sweet spot."},
+
+{ch:9,diff:"Medium",q:"Which output belongs to the Brand Equity Management pillar (not the audit or tracking)?",
+options:["The brand inventory cataloging how the brand is marketed","The brand exploratory uncovering consumer perceptions","The brand charter documenting guidelines and responsibilities","The routine quantitative tracking of awareness scores"],answer:2,
+why:"The brand charter (with the brand equity report and defined responsibilities) belongs to the management pillar.",
+big:"Management institutionalizes brand thinking: the charter sets rules, the equity report communicates status, responsibilities assign ownership.",
+trap:"Inventory and exploratory are audit steps; awareness tracking is the tracking pillar. Only the charter is a management-pillar output."},
+
+{ch:2,diff:"Medium",q:"Positioning should be changed:",
+options:["Frequently, to keep pace with every market fluctuation","Infrequently and only when circumstances truly warrant it","Never, since a position must stay fixed forever","Only when a new CEO or agency takes over the brand"],answer:1,
+why:"Positioning should be fundamentally changed infrequently, only when circumstances significantly reduce the effectiveness of existing POPs/PODs.",
+big:"It can still evolve, refining, adding, or dropping a POP/POD, but wholesale repositioning is rare and risky.",
+trap:"Not frequent (that's whiplash) and not never (positions must evolve). The rule is infrequent, evidence-driven change."},
+
+{ch:1,diff:"Hard",q:"Which statement about brand awareness vs brand image is accurate?",
+options:["Awareness is the content of memory; image is the strength of memory","Awareness is whether/how the brand comes to mind; image is what's linked to it","Awareness and image are synonyms in Keller's framework","Image precedes and produces awareness in the knowledge model"],answer:1,
+why:"Awareness = whether and how readily the brand is evoked (recall/recognition, depth/breadth); image = the associations linked to it.",
+big:"Both are branches of brand knowledge. You generally need awareness before image can matter, you can't hold associations to a brand you can't retrieve.",
+trap:"They're not synonyms, and image doesn't produce awareness. Awareness is retrieval; image is the linked content. Keep the branches straight."},
+];
+
+/* ---- apply the deliberate re-anchor for the mantra question ---- */
+BANK.forEach(q => { if (q._fixanswer) { /* answer already set correctly to index 0 */ delete q._fixanswer; } });
+
+/* ---------- ENGINE ---------- */
+const state = { i: 0, answered: 0, correct: 0, byCh: {}, byDiff: {} };
+const LETTERS = ["A","B","C","D"];
+
+const el = id => document.getElementById(id);
+const KEY = "myexam:" + document.title;
+
+function saveState(pos) {
+  try { localStorage.setItem(KEY, JSON.stringify({ ...state, i: pos })); } catch(e) {}
+}
+function loadState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if (s && typeof s.i === "number") Object.assign(state, s);
+  } catch(e) {}
+}
+function restart() {
+  try { localStorage.removeItem(KEY); } catch(e) {}
+  location.reload();
+}
+
+function updateDash() {
+  const pct = state.answered ? Math.round(state.correct / state.answered * 100) : null;
+  const scoreEl = el("dashscore");
+  scoreEl.innerHTML = pct === null ? "Score <b>·</b>" : `Score <b>${pct}%</b>`;
+  scoreEl.className = "dash-score" + (pct !== null && pct < 70 ? " low" : "");
+  el("answered").textContent = `${state.correct}/${state.answered} correct`;
+
+  const weak = Object.keys(state.byCh)
+    .map(ch => ({ ch, ...state.byCh[ch] }))
+    .filter(x => x.t >= 2 && x.c / x.t < 0.7)
+    .sort((a, b) => a.c / a.t - b.c / b.t)
+    .slice(0, 3);
+  el("dashweak").textContent = weak.length ? "Weak: " + weak.map(x => "Ch " + x.ch).join(" · ") : "";
+
+  const rows = Object.keys(state.byCh).sort((a, b) => a - b).map(ch => {
+    const { c, t } = state.byCh[ch];
+    const p = Math.round(c / t * 100);
+    const col = p < 70 ? "var(--oxblood)" : "var(--green)";
+    return `<div class="row"><span>Chapter ${ch}</span><div class="bar"><i style="width:${p}%; background:${col}"></i></div><span class="frac">${c}/${t} · ${p}%</span></div>`;
+  }).join("");
+  el("livebd").innerHTML = rows || `<div class="row"><span>Answer a question and your per chapter accuracy shows here, updated live.</span></div>`;
+}
+
+function render() {
+  const q = BANK[state.i];
+  el("clock").textContent = `Q${state.i+1} / ${BANK.length}`;
+  el("railfill").style.width = ((state.i)/BANK.length*100) + "%";
+  updateDash();
+
+  const diffClass = q.diff.toLowerCase();
+  el("qhead").innerHTML =
+    `<span class="chip ch">Ch ${q.ch}</span>` +
+    `<span class="chip ${diffClass}">${q.diff}</span>` +
+    `<span class="chip">#${state.i+1}</span>`;
+  el("qtext").textContent = q.q;
+
+  const opts = el("opts");
+  opts.innerHTML = "";
+  q.options.forEach((text, idx) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.innerHTML = `<span class="mark">${LETTERS[idx]}</span>${text}`;
+    b.onclick = () => choose(idx);
+    opts.appendChild(b);
+  });
+
+  const v = el("verdict"); v.className = "verdict"; v.textContent = "";
+  const ex = el("explain"); ex.className = "explain"; ex.innerHTML = "";
+  el("next").className = "next";
+  el("next").textContent = state.i === BANK.length-1 ? "See results →" : "Next →";
+}
+
+function choose(idx) {
+  const q = BANK[state.i];
+  const correct = q.answer;
+  const buttons = [...el("opts").children];
+  buttons.forEach((b,i) => {
+    b.disabled = true;
+    if (i === correct) {
+      // inline !important so the highlight renders in BOTH light and dark mode
+      b.style.setProperty("border-color", "#2f5d43", "important");
+      b.style.setProperty("background", "rgba(47,93,67,0.14)", "important");
+      b.querySelector(".mark").style.setProperty("border-color", "#2f5d43", "important");
+      b.querySelector(".mark").style.setProperty("color", "#2f5d43", "important");
+    }
+    if (i === idx && idx !== correct) {
+      b.style.setProperty("border-color", "#7a2e2b", "important");
+      b.style.setProperty("background", "rgba(122,46,43,0.12)", "important");
+      b.querySelector(".mark").style.setProperty("border-color", "#7a2e2b", "important");
+      b.querySelector(".mark").style.setProperty("color", "#7a2e2b", "important");
+    }
+  });
+
+  const wasRight = idx === correct;
+  state.answered++;
+  if (wasRight) state.correct++;
+
+  state.byCh[q.ch] = state.byCh[q.ch] || {c:0,t:0};
+  state.byCh[q.ch].t++; if (wasRight) state.byCh[q.ch].c++;
+  state.byDiff[q.diff] = state.byDiff[q.diff] || {c:0,t:0};
+  state.byDiff[q.diff].t++; if (wasRight) state.byDiff[q.diff].c++;
+
+  const v = el("verdict");
+  v.className = "verdict show " + (wasRight ? "right" : "wrong");
+  v.textContent = wasRight
+    ? "✓ Correct."
+    : `✗ Wrong. The correct answer (${LETTERS[correct]}) is highlighted above.`;
+
+  // context-sensitive first panel
+  const firstPanel = wasRight
+    ? `<div class="panel correct-why"><p class="plabel">Why this is correct</p><p>${q.why}</p></div>`
+    : `<div class="panel wrong-why"><p class="plabel">Why your answer was wrong</p><p>You picked ${LETTERS[idx]}. ${q.why}</p></div>`;
+
+  el("explain").innerHTML =
+    firstPanel +
+    `<div class="panel bigger"><p class="plabel">Bigger picture</p><p>${q.big}</p></div>` +
+    `<div class="panel trap"><p class="plabel">Exam trap to avoid</p><p>${q.trap}</p></div>` +
+    (q.insight ? `<div class="panel insight"><p class="plabel">Go deeper</p><p>${q.insight}</p></div>` : "");
+  el("explain").className = "explain show";
+
+  updateDash();
+  saveState(state.i + 1);
+  el("next").className = "next show";
+}
+
+el("next").onclick = () => {
+  if (state.i === BANK.length-1) { saveState(BANK.length); showResults(); return; }
+  state.i++;
+  saveState(state.i);
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+el("dashtoggle").onclick = () => {
+  const on = el("livebd").classList.toggle("show");
+  el("dashtoggle").textContent = on ? "Chapters ▴" : "Chapters ▾";
+};
+
+function showResults() {
+  el("quizcard").style.display = "none";
+  updateDash();
+  el("railfill").style.width = "100%";
+  const pct = Math.round(state.correct / BANK.length * 100);
+  let tag;
+  if (pct >= 90) tag = "Exam-ready. Locked in.";
+  else if (pct >= 80) tag = "Strong. Tighten the edge cases.";
+  else if (pct >= 70) tag = "Solid base, gaps to close.";
+  else if (pct >= 60) tag = "Shaky. Another pass needed.";
+  else tag = "Back to the chapters first.";
+
+  const chRows = Object.keys(state.byCh).sort((a,b)=>a-b).map(ch => {
+    const {c,t} = state.byCh[ch];
+    const p = Math.round(c/t*100);
+    return `<div class="row"><span>Chapter ${ch}</span><div class="bar"><i style="width:${p}%"></i></div><span class="frac">${c}/${t}</span></div>`;
+  }).join("");
+
+  const order = ["Easy","Medium","Hard"];
+  const dRows = order.filter(d=>state.byDiff[d]).map(d => {
+    const {c,t} = state.byDiff[d];
+    const p = Math.round(c/t*100);
+    return `<div class="row"><span>${d}</span><div class="bar"><i style="width:${p}%"></i></div><span class="frac">${c}/${t}</span></div>`;
+  }).join("");
+
+  // weakest chapters callout
+  const weakest = Object.keys(state.byCh)
+    .map(ch => ({ch, r: state.byCh[ch].c/state.byCh[ch].t}))
+    .sort((a,b)=>a.r-b.r).slice(0,3)
+    .filter(x => x.r < 1)
+    .map(x => `Ch ${x.ch}`);
+  const weakHtml = weakest.length
+    ? `<div class="weak">Spend your next pass on <b>${weakest.join(", ")}</b> — that's where the points leaked.</div>`
+    : `<div class="weak">Clean sweep across chapters. Nothing obvious to re-drill.</div>`;
+
+  el("results").innerHTML =
+    `<p class="eyebrow" style="color:var(--brass)">Results</p>` +
+    `<div class="score-big">${pct}<small>%</small></div>` +
+    `<div class="score-tag">${state.correct} of ${BANK.length} correct · ${tag}</div>` +
+    `<div class="bd-title">By chapter</div>${chRows}` +
+    `<div class="bd-title">By difficulty</div>${dRows}` +
+    weakHtml +
+    `<button class="restart" onclick="restart()">Restart drill</button>`;
+  el("results").className = "card results show";
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+loadState();
+if (state.i >= BANK.length) { showResults(); } else { render(); }
+</script>
+</body>
+</html>
