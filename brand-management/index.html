@@ -376,6 +376,36 @@
     font-weight: 600;
   }
   .weak b { color: var(--oxblood); }
+
+  /* desktop: questions left, live stats sidebar right */
+  @media (min-width: 900px) {
+    .wrap {
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      grid-template-areas: "head head" "main side";
+      gap: 28px;
+      align-items: start;
+    }
+    header.masthead { grid-area: head; }
+    .dash {
+      grid-area: side;
+      align-self: start;
+      position: sticky;
+      top: 24px;
+      background: var(--card);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 0;
+    }
+    .dash-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .dash-score { font-size: 22px; }
+    .dash-toggle { display: none; }
+    .livebd { display: block; padding-top: 14px; }
+    #quizcard { grid-area: main; }
+    .results { grid-area: main; }
+  }
 </style>
 </head>
 <body>
