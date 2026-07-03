@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Strategic Brand Management — Final Drill (Ch 1–9)</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Unbounded:wght@500;700;800&display=swap');
   :root {
     --ink: #23263b;
     --paper: #f2f3f8;
@@ -52,18 +52,20 @@
 
   header.masthead { padding-bottom: 10px; margin-bottom: 4px; }
   .eyebrow {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: .18em;
+    font-family: "Unbounded", "Nunito", sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .14em;
     text-transform: uppercase;
     color: var(--brass);
-    margin: 0 0 8px;
+    margin: 0 0 10px;
   }
   h1.title {
-    font-size: clamp(26px, 5vw, 38px);
-    line-height: 1.08;
+    font-family: "Unbounded", "Nunito", sans-serif;
+    font-size: clamp(22px, 4vw, 32px);
+    line-height: 1.15;
     margin: 0;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: -.01em;
   }
   .sub {
@@ -402,6 +404,7 @@
     .dash-row { flex-direction: column; align-items: flex-start; gap: 10px; }
     .dash-score { font-size: 22px; }
     .dash-toggle { display: none; }
+    .restartbtn { display: inline-block; }
     .livebd { display: block; padding-top: 14px; }
     #quizcard { grid-area: main; }
     .results { grid-area: main; }
@@ -411,8 +414,8 @@
 <body>
 <div class="wrap">
   <header class="masthead">
-    <p class="eyebrow">Strategic Brand Management · Final</p>
-    <h1 class="title">The 128-Question Drill</h1>
+    <p class="eyebrow">128 Question Drill · Final</p>
+    <h1 class="title">Strategic Brand Management</h1>
     <div class="sub">
       <span>Chapters 1–9</span>
       <span>Keller &amp; Swaminathan</span>
@@ -427,6 +430,7 @@
       <span id="answered">0/0 correct</span>
       <span class="dash-weak" id="dashweak"></span>
       <button class="dash-toggle" id="dashtoggle">Chapters ▾</button>
+      <button class="dash-toggle restartbtn" id="dashrestart">⟳ Restart</button>
     </div>
     <div class="livebd" id="livebd"></div>
   </div>
@@ -1277,7 +1281,7 @@ function updateDash() {
 }
 
 function render() {
-  const q = BANK[state.i];
+  const q = BANK[state.order[state.i]];
   el("clock").textContent = `Q${state.i+1} / ${BANK.length}`;
   el("railfill").style.width = ((state.i)/BANK.length*100) + "%";
   updateDash();
@@ -1308,7 +1312,7 @@ function render() {
 }
 
 function paint(idx, review) {
-  const q = BANK[state.i];
+  const q = BANK[state.order[state.i]];
   const correct = q.answer;
   const buttons = [...el("opts").children];
   buttons.forEach((b,i) => {
@@ -1352,7 +1356,7 @@ function paint(idx, review) {
 
 function choose(idx) {
   if (state.picks[state.i] !== undefined) return;
-  const q = BANK[state.i];
+  const q = BANK[state.order[state.i]];
   const wasRight = idx === q.answer;
   state.picks[state.i] = idx;
   state.answered++;
@@ -1385,6 +1389,10 @@ el("back").onclick = () => {
 el("dashtoggle").onclick = () => {
   const on = el("livebd").classList.toggle("show");
   el("dashtoggle").textContent = on ? "Chapters ▴" : "Chapters ▾";
+};
+
+el("dashrestart").onclick = () => {
+  if (confirm("Restart the exam? Your progress will be cleared and questions reshuffled.")) restart();
 };
 
 function showResults() {
@@ -1435,6 +1443,14 @@ function showResults() {
 }
 
 loadState();
+if (!Array.isArray(state.order) || state.order.length !== BANK.length) {
+  state.order = [...BANK.keys()];
+  for (let k = state.order.length - 1; k > 0; k--) {
+    const j = Math.floor(Math.random() * (k + 1));
+    [state.order[k], state.order[j]] = [state.order[j], state.order[k]];
+  }
+  saveState(state.i);
+}
 if (state.i >= BANK.length) { showResults(); } else { render(); }
 </script>
 </body>
